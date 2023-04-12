@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.9.1",
+    "jwt-decode": "^3.1.2",
+    "react-redux": "^8.0.5",
+    "react-scroll": "^1.8.9"
+  }
+}
