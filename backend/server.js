@@ -26,6 +26,9 @@ dotenv.config({ path: "./config.env" });
 const app = express();
 app.use(cors({ origin: "*" }));
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use("/static/users", express.static(path.join(__dirname, "uploads/users")));
 app.use(
   "/static/questions",
@@ -146,5 +149,9 @@ app.use("/api/v1/rewardLog", rewardLogRouter);
 app.use("/api/v1/contacts", contactsRouter);
 app.use("/api/v1/faq", FAQRouter);
 app.use("/auth", authRouter);
+
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 server.listen(port, () => console.log(`app is started at ${port}`));
