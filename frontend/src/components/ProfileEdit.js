@@ -7,7 +7,7 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import axios from "axios";
-import { url } from "./../Constants/Url";
+import { url, baseURL } from "./../Constants/Url";
 import { modalActions } from "../Redux/ModalReducer";
 import { loginActions } from "../Redux/LoginReducer";
 import Avatar from "./../Images/avatar.png";
@@ -22,7 +22,7 @@ function ProfileEdit({ userProfile, type, activeStep, changeStep, getUser }) {
   useEffect(() => {
     setImages(userProfile?.user_image);
     setImgPreviews(
-      `http://localhost:5000/static/users/${userProfile?.user_image}` || Avatar
+      `${baseURL}/static/users/${userProfile?.user_image}` || Avatar
     );
   }, []);
 

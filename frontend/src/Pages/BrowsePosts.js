@@ -12,8 +12,10 @@ import { toast } from "react-toastify";
 
 const BrowsePosts = () => {
   const queryClient = useQueryClient();
+  const [questions, setQuestions] = useState([]);
   const [page, setPage] = useState(1);
   // const [tag,setTag] = useState("");
+  const [isLoading, setLoading] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
 
   const { search } = useLocation();
@@ -25,6 +27,7 @@ const BrowsePosts = () => {
   }, [page, tag]);
 
   const getQuestions = async () => {
+    setLoading(true);
     const URL =
       tag === null || ""
         ? `${url}/questions?page=${page}`
@@ -32,20 +35,24 @@ const BrowsePosts = () => {
     try {
       const response = await axios.get(URL);
       setTotalPages(response?.data.totalPages);
-      return response?.data?.data?.questions;
+      setQuestions(response?.data?.data?.questions);
     } catch (err) {
       toast("An error occured");
     }
+    setLoading(false);
   };
 
-  const { isLoading, data: questions } = useQuery("questions", () =>
-    getQuestions()
-  );
-  console.log("questions", questions);
+  // const { isLoading, data: questions } = useQuery("questions", () =>
+  //   getQuestions()
+  // );
 
   const handleChange = (event, value) => {
     setPage(value);
+    getQuestions();
+    // queryClient.invalidateQueries({ queryKey: ["questions"] });
   };
+
+  console.log("questions", questions);
 
   return (
     <div className="w-full md:w-11/12 m-auto flex justify-between">

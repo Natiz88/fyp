@@ -8,6 +8,8 @@ const User = require("../model/userModel");
 
 exports.getquestions = async (req, res) => {
   const { page = 1, limit = 10, tag = "" } = req.query;
+  console.log("page", page);
+
   try {
     let allquestions =
       tag === null || tag === ""

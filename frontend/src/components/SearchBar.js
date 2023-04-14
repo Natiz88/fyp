@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
 import { url } from "./../Constants/Url";
 import { Link } from "react-router-dom";
+import useOutsideClick from "../hooks/useOutsideClick";
 
 const SearchBar = () => {
   const [term, setTerm] = useState("");
@@ -27,10 +28,17 @@ const SearchBar = () => {
       console.log("err", err);
     }
   };
-  console.log(`${url}/questions/search${option}?term=${term}`);
+  const handleClickOutside = () => {
+    setTerm("");
+  };
+
+  const clickRef = useOutsideClick(handleClickOutside);
 
   return (
-    <div className="w-full h-full lg:h-1/2 p-2 lg:p-0 relative flex items-center">
+    <div
+      ref={clickRef}
+      className="w-full h-full lg:h-1/2 p-2 lg:p-0 relative flex items-center"
+    >
       <input
         value={term}
         onChange={(e) => setTerm(e.target.value)}

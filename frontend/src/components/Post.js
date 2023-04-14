@@ -3,7 +3,7 @@ import { MoreVert } from "@mui/icons-material";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { url } from "./../Constants/Url";
+import { url, baseURL } from "./../Constants/Url";
 import { GetDate } from "./../Constants/GetDate";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAltOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
@@ -105,7 +105,7 @@ const Post = ({ singleQuestion, getQuestions }) => {
               <Link to={`/profile/${question?.user_id?._id}`} className="flex">
                 <img
                   className="rounded-full w-[40px] h-[40px]"
-                  src={`http://localhost:5000/static/users/${question?.user_id?.user_image}`}
+                  src={`${baseURL}/static/users/${question?.user_id?.user_image}`}
                   alt="img"
                 />
                 <div className="h-full ml-2">

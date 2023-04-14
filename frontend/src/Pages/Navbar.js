@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Logo from "./../Images/logo.png";
 import { useQuery, useQueryClient } from "react-query";
@@ -22,6 +22,7 @@ import ChangePassword from "./ChangePassword";
 import ContactUs from "./ContactUs";
 import ForgotPassword from "./ForgotPassword";
 import { SocketContext } from "./../Socket";
+import useOutsideClick from "../hooks/useOutsideClick";
 
 function Navbar() {
   const queryClient = useQueryClient();

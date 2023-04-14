@@ -4,7 +4,7 @@ import LeftSidebar from "./../components/LeftSideBar";
 import RightSidebar from "./../components/RightSideBar";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
-import { url } from "./../Constants/Url";
+import { url, baseURL } from "./../Constants/Url";
 import { GetDate } from "../Constants/GetDate";
 import CircularProgress from "@mui/material/CircularProgress";
 import EditIcon from "@mui/icons-material/Edit";
@@ -85,7 +85,7 @@ const Profile = () => {
             <div className="flex items-center justify-center py-4">
               <div className="rounded-full w-[120px] h-[120px] relative">
                 <img
-                  src={`http://localhost:5000/static/users/${userProfile?.user_image}`}
+                  src={`${baseURL}/static/users/${userProfile?.user_image}`}
                   alt="profile"
                   className="w-full h-full rounded-full"
                 />

@@ -7,6 +7,7 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { BsCoin } from "react-icons/bs";
 import useOutsideClick from "../hooks/useOutsideClick";
+import { baseURL } from "./../Constants/Url";
 
 const Notifications = ({
   notifications = [],
@@ -20,6 +21,11 @@ const Notifications = ({
   const handleClickOutside = () => {
     handleNotifications(false);
   };
+  const handleClickDropdown = () => {
+    setDropdown(false);
+  };
+
+  const clickRef = useOutsideClick(handleClickDropdown);
 
   const notificationRef = useOutsideClick(handleClickOutside);
 
@@ -47,8 +53,9 @@ const Notifications = ({
         onClick={() => setDropdown(!isDropdown)}
       >
         <Avatar
+          ref={clickRef}
           alt="img"
-          src={`http://localhost:5000/static/users/${user?.user_image}`}
+          src={`${baseURL}/static/users/${user?.user_image}`}
           className="cursor-pointer"
         />
         {isDropdown && <AvatarDropdown />}

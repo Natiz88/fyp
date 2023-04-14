@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { url } from "./../Constants/Url";
+import { url, baseURL } from "./../Constants/Url";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { GetDate } from "./../Constants/GetDate";
@@ -120,7 +120,7 @@ const AnswersDetail = ({
           >
             <img
               className="rounded-full w-[30px] h-[30px]"
-              src={`http://localhost:5000/static/users/${answer?.user_id?.user_image}`}
+              src={`${baseURL}/static/users/${answer?.user_id?.user_image}`}
               alt="img"
             />
             <div className="h-full ml-2 flex justify-between items-center">

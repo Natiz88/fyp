@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import AnswersDetail from "../components/AnswersDetail";
 import CommentDetail from "../components/CommentDetail";
 import {
@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { url } from "../Constants/Url";
+import { url, baseURL } from "../Constants/Url";
 import LeftSidebar from "./../components/LeftSideBar";
 import RightSidebar from "../components/RightSideBar";
 import { MoreVert } from "@mui/icons-material";
@@ -20,16 +20,13 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useSelector } from "react-redux";
 import SendIcon from "@mui/icons-material/Send";
 import { SocketContext } from "./../Socket";
+import useOutsideClick from "../hooks/useOutsideClick";
 
 import { TextField, InputAdornment, Button } from "@mui/material";
 import PostOptions from "../components/PostOptions";
 
 import AnswerInput from "../components/AnswerInput";
 import { toast } from "react-toastify";
-
-// import io from "socket.io-client";
-// const ENDPOINT = "http://192.168.1.64:5000";
-// let socket;
 
 const PageDetails = () => {
   const user = useSelector((state) => state.login.userDetails);
@@ -48,32 +45,11 @@ const PageDetails = () => {
 
   const socket = React.useContext(SocketContext);
 
-  useEffect(() => {
-    document.querySelector("#ans").scrollIntoView({
-      behavior: "smooth",
-    });
-    const name = searchParams.get("name");
-    console.log("name", name);
-
-    var scrollDiv = document.getElementById("6430da51d1c6a709ed96b48e");
-    console.log("div", scrollDiv);
-    // window.scrollTo({ top: scrollDiv, behavior: "smooth" });
-  }, []);
-
-  const onImageChange = (e) => {
-    const file = e.target.files[0];
-    const id = Math.random();
-    setImages([...images, { id, file }]);
-    onPreviews(id, file);
+  const handleClickOutside = () => {
+    setOptions(false);
   };
 
-  const onPreviews = (id, file) => {
-    setImgPreviews([...imgPreviews, { id, file: URL.createObjectURL(file) }]);
-  };
-  const deleteImage = (img) => {
-    setImgPreviews([...imgPreviews.filter((image) => image.id !== img.id)]);
-    setImages([...images.filter((image) => image.id !== img.id)]);
-  };
+  const clickRef = useOutsideClick(handleClickOutside);
 
   const getQuestion = async () => {
     try {
@@ -309,7 +285,7 @@ const PageDetails = () => {
                   >
                     <img
                       className="rounded-full w-[40px] h-[40px]"
-                      src={`http://localhost:5000/static/users/${question?.user_id?.user_image}`}
+                      src={`${baseURL}/static/users/${question?.user_id?.user_image}`}
                       alt="img"
                     />
                     <div className="h-full ml-2">
@@ -320,6 +296,7 @@ const PageDetails = () => {
                     </div>
                   </Link>
                   <MoreVert
+                    ref={clickRef}
                     className="cursor-pointer"
                     onClick={() => setOptions(!isOptionsOpen)}
                   />
@@ -343,7 +320,7 @@ const PageDetails = () => {
                     {question?.question_images.map((image) => (
                       <img
                         alt="img"
-                        src={`http://localhost:5000/static/questions/${image}`}
+                        src={`${baseURL}/static/questions/${image}`}
                         className="py-4"
                       />
                     ))}
