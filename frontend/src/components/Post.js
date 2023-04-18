@@ -198,14 +198,20 @@ const Post = ({ singleQuestion, getQuestions }) => {
           )}
           <span className="pl-2">Like</span>
         </div>
-        <div className="flex items-center w-1/4 h-4/5 justify-center cursor-pointer hover:bg-grayLight">
+        <Link
+          to={`/pageDetails/${question?._id}`}
+          className="flex items-center w-1/4 h-4/5 justify-center cursor-pointer hover:bg-grayLight"
+        >
           <CreateOutlinedIcon />
           <span className="pl-2">Answer</span>
-        </div>
-        <div className="flex items-center w-1/4 h-4/5 justify-center cursor-pointer hover:bg-grayLight">
+        </Link>
+        <Link
+          to={`/pageDetails/${question?._id}`}
+          className="flex items-center w-1/4 h-4/5 justify-center cursor-pointer hover:bg-grayLight"
+        >
           <ChatBubbleOutlineIcon />
           <span className="pl-2">Comment</span>
-        </div>
+        </Link>
       </div>
     </div>
   );

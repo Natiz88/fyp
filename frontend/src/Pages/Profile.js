@@ -143,7 +143,9 @@ const Profile = () => {
                 <Post singleQuestion={question} />
               ))
             ) : (
-              <div>No questions Asked</div>
+              <div className="m-4 p-8 bg-white flex items-center justify-center rounded-lg">
+                No questions Asked
+              </div>
             ))}
           {tab === "hidden_questions" &&
             (hidden_questions.length > 0 ? (
@@ -151,7 +153,7 @@ const Profile = () => {
                 <Post singleQuestion={question} />
               ))
             ) : (
-              <div className="bg-white flex items-center justify-center rounded-lg">
+              <div className="m-4 p-8 bg-white flex items-center justify-center rounded-lg">
                 No questions hidden
               </div>
             ))}
@@ -160,7 +162,7 @@ const Profile = () => {
               userProfile.questionsAnswered.map((answer) => (
                 <div className="m-4 bg-white rounded-lg tracking-normal z-0 relative">
                   <Link to={`/pageDetails/${answer.question_id._id}`}>
-                    <div className="w-full mb-8 px-8 cursor-pointer py-4">
+                    <div className="w-full mb-4 px-8 cursor-pointer py-4">
                       <p className="font-semibold text-base">
                         Q. {answer?.question_id?.question_title}
                       </p>

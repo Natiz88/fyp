@@ -98,7 +98,6 @@ exports.getIndividualUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   let { address, phone_number, full_name, bio } = req.body;
-  console.log("req", req.file.filename);
   let user_image;
   if (req.file) {
     user_image = req.file.filename;

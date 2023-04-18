@@ -17,7 +17,7 @@ import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAltOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { GetDate } from "./../Constants/GetDate";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SendIcon from "@mui/icons-material/Send";
 import { SocketContext } from "./../Socket";
 import useOutsideClick from "../hooks/useOutsideClick";
@@ -27,6 +27,7 @@ import PostOptions from "../components/PostOptions";
 
 import AnswerInput from "../components/AnswerInput";
 import { toast } from "react-toastify";
+import { modalActions } from "../Redux/ModalReducer";
 
 const PageDetails = () => {
   const user = useSelector((state) => state.login.userDetails);
@@ -43,7 +44,11 @@ const PageDetails = () => {
   const queryClient = useQueryClient();
   const token = localStorage.getItem("token");
 
+  const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
+
   const socket = React.useContext(SocketContext);
+
+  const dispatch = useDispatch();
 
   const handleClickOutside = () => {
     setOptions(false);
@@ -221,6 +226,10 @@ const PageDetails = () => {
   );
 
   const postCommentSubmit = () => {
+    if (!isLoggedIn) {
+      dispatch(modalActions.openLoginModal());
+      return;
+    }
     postCommentMutation.mutate();
   };
   const deleteCommentSubmit = (data) => {
@@ -230,21 +239,41 @@ const PageDetails = () => {
     deleteAnswerMutation.mutate(data);
   };
   const postAnswerSubmit = (data) => {
+    if (!isLoggedIn) {
+      dispatch(modalActions.openLoginModal());
+      return;
+    }
     postAnswerMutation.mutate(data);
   };
   const likePostSubmit = () => {
+    if (!isLoggedIn) {
+      dispatch(modalActions.openLoginModal());
+      return;
+    }
     likePostMutation.mutate();
   };
   const acceptAnswerSubmit = (data) => {
     acceptAnswerMutation.mutate(data);
   };
   const upvoteAnswerSubmit = (data) => {
+    if (!isLoggedIn) {
+      dispatch(modalActions.openLoginModal());
+      return;
+    }
     upvoteAnswerMutation.mutate(data);
   };
   const downvoteAnswerSubmit = (data) => {
+    if (!isLoggedIn) {
+      dispatch(modalActions.openLoginModal());
+      return;
+    }
     downvoteAnswerMutation.mutate(data);
   };
   const replyAnswerSubmit = (data) => {
+    if (!isLoggedIn) {
+      dispatch(modalActions.openLoginModal());
+      return;
+    }
     replyAnswerMutation.mutate(data);
   };
 
@@ -255,8 +284,6 @@ const PageDetails = () => {
   const showAnswers = () => {
     setAnswerPage(answerPage + 10);
   };
-
-  console.log("page", question, isLoading);
 
   const isLiked =
     question?.question_likes && question?.question_likes.includes(user?._id);
