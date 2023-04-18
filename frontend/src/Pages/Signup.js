@@ -67,7 +67,7 @@ function Signup({ type, activeStep, changeStep }) {
     try {
       const loginData = signupFormik.values;
       console.log();
-      const response = await axios.post(`${url}/users/signup`, loginData);
+      await axios.post(`${url}/users/signup`, loginData);
       dispatch(
         modalActions.setCredentials({
           email: signupFormik.values.email,

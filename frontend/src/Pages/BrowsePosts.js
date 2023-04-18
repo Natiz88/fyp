@@ -26,6 +26,12 @@ const BrowsePosts = () => {
     getQuestions();
   }, [page, tag]);
 
+  const handleChange = (event, value) => {
+    setPage(value);
+    getQuestions();
+    // queryClient.invalidateQueries({ queryKey: ["questions"] });
+  };
+
   const getQuestions = async () => {
     setLoading(true);
     const URL =
@@ -41,18 +47,6 @@ const BrowsePosts = () => {
     }
     setLoading(false);
   };
-
-  // const { isLoading, data: questions } = useQuery("questions", () =>
-  //   getQuestions()
-  // );
-
-  const handleChange = (event, value) => {
-    setPage(value);
-    getQuestions();
-    // queryClient.invalidateQueries({ queryKey: ["questions"] });
-  };
-
-  console.log("questions", questions);
 
   return (
     <div className="w-full md:w-11/12 m-auto flex justify-between">

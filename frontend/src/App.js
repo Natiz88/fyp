@@ -33,29 +33,9 @@ function App() {
   return (
     <div className="bg-secondary">
       <BrowserRouter>
-        <ToastContainer
-          position="top-right"
-          autoClose={10000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
         <Navbar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route
-            path="/func"
-            element={doSomething("alerte", <BrowsePosts />)}
-          />
-          {/* <Route
-            path="/login"
-            onEnter={() => dispatch(modalActions.openLoginModal())}
-          /> */}
           <Route path="/BrowsePosts" element={<BrowsePosts />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/leaderboard" element={<LeaderBoard />} />

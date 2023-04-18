@@ -3,10 +3,7 @@ const Comments = require("./../model/commentsModel");
 
 const answersSchema = new mongoose.Schema(
   {
-    answer_body: {
-      type: String,
-      required: [true, "Answer cannot be empty"],
-    },
+    answer_body: { type: String, required: [true, "Answer cannot be empty"] },
     answer_images: [],
     question_id: {
       type: mongoose.Schema.Types.ObjectId,
@@ -18,24 +15,10 @@ const answersSchema = new mongoose.Schema(
       required: [true, "User is required"],
       ref: "users",
     },
-    upvotes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
-      },
-    ],
-    downvotes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
-      },
-    ],
+    upvotes: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
+    downvotes: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
     answer_reports: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
-        default: [],
-      },
+      { type: mongoose.Schema.Types.ObjectId, ref: "users", default: [] },
     ],
     answer_accepted: { type: Boolean, default: false },
   },
