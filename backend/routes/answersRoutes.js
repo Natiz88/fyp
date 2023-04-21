@@ -21,7 +21,6 @@ answersRouter
 answersRouter.route("/reportedAnswers").get(answersController.reportedAnswers);
 
 answersRouter.route("/:id").get(answersController.getIndividualAnswer);
-//   .put(userController.uploadUserPhoto, userController.updateUser)
 answersRouter
   .route("/deleteAnswer/:id")
   .post(auth, answersController.deleteAnswer);
