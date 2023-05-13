@@ -45,7 +45,7 @@ const LandingPage = ({ openmodal }) => {
   return (
     <>
       <div className="bg-white lg:pt-[80px]">
-        <div className="w-full lg:h-[500px] flex flex-col lg:flex-row justify-center pl-4 lg:pl-0 lg:p-16">
+        <div className="w-full lg:h-[500px] flex flex-col-reverse lg:flex-row justify-center pl-4 lg:pl-0 lg:p-16">
           <div className="w-full lg:w-1/3 flex flex-col items-center">
             <p className="w-full font-extrabold text-2xl lg:text-5xl mt-32">
               Questions Lead to{" "}
@@ -53,7 +53,7 @@ const LandingPage = ({ openmodal }) => {
                 Better <span className="text-primary">Solutions</span>
               </span>
             </p>
-            <div className="w-full mt-8 pr-8 flex">
+            <div className="w-full mt-2 md:mt-8 md:pr-8 flex text-sm mb-8 md:mb-0">
               <Link to="/BrowsePosts">
                 <Button variant="outlined" sx={{ color: "#6CD8F0" }}>
                   Browse Questions
@@ -71,7 +71,7 @@ const LandingPage = ({ openmodal }) => {
               </Button>
             </div>
           </div>
-          <div className="w-full lg:w-1/3">
+          <div className="hidden lg:block w-10/12 h-10/12 lg:w-1/3">
             <img src={Home} alt="img" className="w-full h-full" />
           </div>
         </div>
@@ -92,16 +92,16 @@ const LandingPage = ({ openmodal }) => {
             similar topic.
           </p>
         </div>
-        <div className="w-full lg:p-8 lg:px-16 lg:flex justify-around ">
+        <div className="w-full pb-4 lg:p-8 lg:px-16 flex flex-col lg:flex-row justify-center lg:justify-around ">
           <div className="w-full lg:w-2/5">
             <img src={Signup} alt="" className="w-full h-full" />
           </div>
-          <div className="w-2/5 lg:pt-32">
+          <div className="flex flex-col items-center justify-center lg:w-2/5 lg:pt-32">
             <p className="font-extrabold text-2xl lg:text-5xl ">Get Started</p>
-            <p className="w-full font-normal text-md lg:text-lg pt-8 tracking-wide">
+            <p className="font-normal text-md lg:text-lg pt-4 lg:pt-8 tracking-wide">
               Signup now and start asking questions.
             </p>
-            <div className="w-full mt-8 pr-8 flex">
+            <div className="mt-2 lg:mt-8 pr-8 flex">
               <Link to="/BrowsePosts">
                 <Button variant="outlined" sx={{ color: "#6CD8F0" }}>
                   Signup

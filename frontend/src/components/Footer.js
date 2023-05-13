@@ -7,7 +7,7 @@ const Footer = () => {
   const dispatch = useDispatch();
   const year = new Date().getFullYear();
   return (
-    <div className="w-full mt-4 py-12 md:px-32 bg-black text-white">
+    <div className="w-full py-12 lg:px-32 bg-black text-white">
       <div className="flex justify-around">
         <div className="w-1/4">
           <p

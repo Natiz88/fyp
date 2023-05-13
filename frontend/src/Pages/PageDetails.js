@@ -48,6 +48,12 @@ const PageDetails = () => {
 
   const socket = React.useContext(SocketContext);
 
+  useEffect(() => {
+    if (socket) {
+      socket.emit("joinRoom", id);
+    }
+  }, [socket, id]);
+
   const dispatch = useDispatch();
 
   const handleClickOutside = () => {
@@ -74,6 +80,17 @@ const PageDetails = () => {
   } = useQuery("question", () => getQuestion());
 
   // const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("sendReloadPost", () => {
+        queryClient.invalidateQueries("question");
+      });
+
+      return () => socket.off("sendReloadPost");
+    }
+  }, [socket]);
+
   const config = {
     headers: {
       accept: "application/json",
@@ -87,13 +104,11 @@ const PageDetails = () => {
         question_id: question?._id,
         comment_body: comment,
       };
-      console.log("com", data);
       await axios.post(`${url}/comments`, data, config);
-      await socket.emit("send-notification", question?.user_id?._id);
     },
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries("question");
+      onSuccess: async () => {
+        await socket.emit("changePostContent", question?._id);
         setComment("");
         toast("Comment posted successfully");
       },
@@ -108,8 +123,8 @@ const PageDetails = () => {
       await axios.post(`${url}/comments/deleteComment/${data}`, {}, config);
     },
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries("question");
+      onSuccess: async () => {
+        await socket.emit("changePostContent", question?._id);
         toast("Comment deleted successfully");
       },
       onError: () => {
@@ -122,8 +137,8 @@ const PageDetails = () => {
       await axios.post(`${url}/answers/deleteAnswer/${data}`, {}, config);
     },
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries("question");
+      onSuccess: async () => {
+        await socket.emit("changePostContent", question?._id);
         toast("Answer deleted successfully");
       },
       onError: () => {
@@ -139,8 +154,8 @@ const PageDetails = () => {
       await socket.emit("send-coins", user?._id);
     },
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries("question");
+      onSuccess: async () => {
+        await socket.emit("changePostContent", question?._id);
         toast("Answer posted successfully");
       },
       onError: () => {
@@ -155,8 +170,8 @@ const PageDetails = () => {
       await socket.emit("send-notification", question?.user_id?._id);
     },
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries("question");
+      onSuccess: async () => {
+        await socket.emit("changePostContent", question?._id);
       },
       onError: () => {
         toast("An error occured");
@@ -170,9 +185,9 @@ const PageDetails = () => {
       await socket.emit("send-notification", question?.user_id?._id, user?._id);
     },
     {
-      onSuccess: () => {
+      onSuccess: async () => {
+        await socket.emit("changePostContent", question?._id);
         toast("The answer was accepted");
-        queryClient.invalidateQueries("question");
       },
       onError: () => {
         toast("An error occured");
@@ -185,9 +200,9 @@ const PageDetails = () => {
       await socket.emit("send-notification", question?.user_id?._id);
     },
     {
-      onSuccess: () => {
+      onSuccess: async () => {
+        await socket.emit("changePostContent", question?._id);
         toast("The answer was upvoted");
-        queryClient.invalidateQueries("question");
       },
       onError: () => {
         toast("An error occured");
@@ -200,9 +215,9 @@ const PageDetails = () => {
       await socket.emit("send-notification", question?.user_id?._id);
     },
     {
-      onSuccess: () => {
+      onSuccess: async () => {
+        await socket.emit("changePostContent", question?._id);
         toast("The answer was downvoted");
-        queryClient.invalidateQueries("question");
       },
       onError: () => {
         toast("An error occured");
@@ -215,8 +230,8 @@ const PageDetails = () => {
       await axios.post(`${url}/comments`, data, config);
     },
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries("question");
+      onSuccess: async () => {
+        await socket.emit("changePostContent", question?._id);
         toast("The reply was posted");
       },
       onError: () => {

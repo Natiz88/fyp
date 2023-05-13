@@ -30,7 +30,7 @@ const Notifications = ({
   const notificationRef = useOutsideClick(handleClickOutside);
 
   return (
-    <div className="w-full h-full text-[15px] flex items-center justify-around relative">
+    <div className="w-full h-full text-[15px] flex items-center justify-around relative z-50">
       <Badge
         badgeContent={notifications.length}
         color="primary"

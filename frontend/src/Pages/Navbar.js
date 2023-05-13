@@ -23,6 +23,7 @@ import ContactUs from "./ContactUs";
 import ForgotPassword from "./ForgotPassword";
 import { SocketContext } from "./../Socket";
 import useOutsideClick from "../hooks/useOutsideClick";
+import AvatarImage from "./../Images/avatar.png";
 
 function Navbar() {
   const queryClient = useQueryClient();
@@ -97,11 +98,11 @@ function Navbar() {
             </Link>
           </div>
           <div className="w-4/6 lg:w-3/4 h-full flex justify-end lg:justify-around items-center">
-            <div className="hidden lg:flex items-center w-2/4 h-full">
+            <div className="hidden lg:flex items-center w-2/4 h-full z-50">
               <SearchBar />
             </div>
             {isLoggedIn ? (
-              <div className="relative w-3/6 lg:w-2/6">
+              <div className="relative w-10/12 lg:w-2/6">
                 {" "}
                 <Notifications
                   notifications={notifications}
@@ -121,7 +122,11 @@ function Navbar() {
                                 <img
                                   className="w-3/5"
                                   alt="avatar"
-                                  src={`http://localhost:5000/static/users/${not?.sender?.user_image}`}
+                                  src={
+                                    not?.sender?.user_image
+                                      ? `http://localhost:5000/static/users/${not?.sender?.user_image}`
+                                      : AvatarImage
+                                  }
                                 />
                               </div>
                               <div className="w-4/5">

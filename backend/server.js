@@ -12,6 +12,7 @@ const notificationsRouter = require("./routes/notificationsRoutes");
 const rewardsRouter = require("./routes/rewardsRoutes");
 const rewardLogRouter = require("./routes/rewardLogRoutes");
 const FAQRouter = require("./routes/faqRoutes");
+const GiftRouter = require("./routes/giftRoutes");
 const authRouter = require("./routes/authRoutes");
 const contactsRouter = require("./routes/contactsRoutes");
 const dotenv = require("dotenv");
@@ -44,27 +45,50 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const port = process.env.PORT || 5000;
 
 const server = require("http").Server(app);
-let users = {};
+let users = [];
 
 const io = socketio(server, { cors: { origin: "*" } });
 
 io.on("connection", (socket) => {
-  const token = socket.handshake.query.token;
-  console.log("tokens", token);
-  if (token && token !== "") {
-    try {
-      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-      if (decoded.id in users) {
-        delete users[decoded.id];
-        users[decoded.id] = socket.id;
-      } else {
-        users[decoded.id] = socket.id;
-      }
-    } catch (err) {
-      console.log("no token");
+  socket.on("joinRoom", (id) => {
+    const user = { userId: socket.id, room: id };
+
+    const check = users.every((user) => user.userId !== socket.id);
+
+    if (check) {
+      users.push(user);
+      socket.join(user.room);
+    } else {
+      users.map((user) => {
+        if (user.userId === socket.id) {
+          if (user.room !== id) {
+            socket.leave(user.room);
+            socket.join(id);
+            user.room = id;
+          }
+        }
+      });
     }
-  }
-  console.log("users", users);
+
+    console.log(users);
+    // console.log(socket.adapter.rooms)
+  });
+
+  // const token = socket.handshake.query.token;
+  // console.log("tokens", token);
+  // if (token && token !== "") {
+  //   try {
+  //     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  //     if (decoded.id in users) {
+  //       delete users[decoded.id];
+  //       users[decoded.id] = socket.id;
+  //     } else {
+  //       users[decoded.id] = socket.id;
+  //     }
+  //   } catch (err) {
+  //     console.log("no token");
+  //   }
+  // }
   socket.on("setup", (userData) => {
     socket.join(userData._id);
     socket.emit("connected");
@@ -80,14 +104,6 @@ io.on("connection", (socket) => {
     socket.to(users[user_id]).emit("receive_coins");
   });
 
-  // socket.on("leave-room", (chatId) => {
-  //   socket.leave(chatId);
-  // });
-
-  // socket.on("new-message", (event) => {
-  //   socket.to(event.data.events[1]).emit("push-new-message", event);
-  // });
-
   socket.on("valor", ({ id, name }, callback) => {
     console.log("data::", id, name);
 
@@ -101,8 +117,9 @@ io.on("connection", (socket) => {
     callback();
   });
 
-  socket.on("send-message", (message) => {
-    io.emit("receive-message", message);
+  socket.on("changePostContent", (question_id) => {
+    console.log("post comment socket", question_id);
+    io.to(question_id).emit("sendReloadPost");
   });
 
   // socket.on("typing", (data) => {
@@ -148,6 +165,7 @@ app.use("/api/v1/rewards", rewardsRouter);
 app.use("/api/v1/rewardLog", rewardLogRouter);
 app.use("/api/v1/contacts", contactsRouter);
 app.use("/api/v1/faq", FAQRouter);
+app.use("/api/v1/gifts", GiftRouter);
 app.use("/auth", authRouter);
 
 app.get("/*", (req, res) => {

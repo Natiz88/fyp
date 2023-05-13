@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { errorCodes } from "./../Constants/ErrorCodes";
 import { url } from "./../Constants/Url";
@@ -45,11 +45,16 @@ function Login() {
   };
 
   const google = async () => {
-    await window.open("http://localhost:5000/auth/google", "_self");
-    const response = await axios.get("http://localhost:5000/auth/logins");
-    console.log("log", response);
-    localStorage.setItem("log", response);
+    window.open("http://localhost:5000/auth/google", "_self");
+    // const response = await axios.get("http://localhost:5000/auth/logins");
+    // console.log("log", response);
+    localStorage.setItem("log", "response");
   };
+
+  const location = useLocation();
+  const rePath = location.state?.from?.pathname || "/";
+
+  console.log("path", rePath);
 
   const validationSchema = Yup.object({
     email: Yup.string().email("please enter a valid email"),
@@ -104,7 +109,7 @@ function Login() {
       localStorage.setItem("token", token);
       userHandler(response?.data?.data?.user);
       setLoginState();
-      navigate("/");
+      navigate({ rePath });
       toast("login successfull");
       dispatch(modalActions.closeLoginModal());
       dispatch(modalActions.emptyCred());

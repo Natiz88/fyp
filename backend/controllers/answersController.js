@@ -128,6 +128,7 @@ exports.upvoteAnswer = async (req, res) => {
   try {
     const answer = await Answers.findById(req.params.id).populate("user_id");
     const reward = await Rewards.find({ type: "Answer Upvoted" });
+    await answer.updateOne({ $pull: { downvotes: req.body.user_id } });
     await RewardLog.create({
       value: reward[0].value,
       title: answer.answer_body,

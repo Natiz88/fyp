@@ -20,12 +20,13 @@ passport.use(
       callbackURL: "http://localhost:5000/auth/google/callback",
     },
     function (request, accessToken, refreshToken, profile, done) {
+      console.log("gpoogo", profile);
       User.findOneAndUpdate(
         {
           google_id: profile.id,
           user_image: profile.photos[0].value,
           email: profile.emails[0].value,
-          full_name: profile.name.fullName,
+          full_name: profile.displayName,
         },
         function (err, user) {
           return done(err, user);
