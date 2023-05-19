@@ -22,6 +22,8 @@ const ReportedQuestions = lazy(() =>
   import("../pages/reports/ReportedQuestions")
 );
 const ReportedAnswers = lazy(() => import("../pages/reports/ReportedAnswers"));
+const Gifts = lazy(() => import("../pages/gifts/Gifts"));
+const AddGift = lazy(() => import("../pages/gifts/AddGift"));
 
 /**
  * ⚠ These are internal routes!
@@ -101,6 +103,14 @@ const routes = [
   {
     path: "/reportedAnswers",
     component: ReportedAnswers,
+  },
+  {
+    path: "/gifts",
+    component: Gifts,
+  },
+  {
+    path: "/addgifts/:id",
+    component: AddGift,
   },
 ];
 

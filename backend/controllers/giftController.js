@@ -33,13 +33,12 @@ exports.getGifts = async (req, res) => {
 };
 
 exports.postGift = async (req, res) => {
-  console.log("gift", req.body);
   try {
     if (req.files) {
       console.log("image found");
       req.body.gift_image = req.files.map((file) => file.filename);
     }
-    req.body.user_id = req.user_id;
+    req.body.added_by = req.user_id;
     const newGift = await Gift.create(req.body);
     res.status(201).json({
       status: "success",
@@ -115,7 +114,7 @@ exports.hideGift = async (req, res) => {
 
 exports.deleteAllGifts = async (req, res) => {
   try {
-    const question = await Gift.deleteMany();
+    const gift = await Gift.deleteMany();
     res.status(200).json({
       status: "successfull",
       data: {

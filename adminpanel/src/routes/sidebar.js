@@ -67,6 +67,21 @@ const routes = [
       },
     ],
   },
+  {
+    icon: "PeopleIcon",
+    name: "Gifts",
+    routes: [
+      // submenu
+      {
+        path: "/app/gifts",
+        name: "Gifts",
+      },
+      {
+        path: "/app/addgift/-1",
+        name: "AddGift",
+      },
+    ],
+  },
 ];
 
 export default routes;

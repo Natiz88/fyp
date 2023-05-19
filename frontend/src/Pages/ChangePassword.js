@@ -17,6 +17,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { screenActions } from "../Redux/ScreenReducer";
+import { modalActions } from "../Redux/ModalReducer";
+import { toast } from "react-toastify";
 
 function ChangePassword({ openLoginModal }) {
   const user = useSelector((state) => state.login.userDetails);
@@ -71,14 +73,11 @@ function ChangePassword({ openLoginModal }) {
           contentType: "multipart/form-data",
         },
       };
-      const response = await axios.post(
-        `${url}/users/changePassword/${user._id}`,
-        data,
-        config
-      );
-      console.log("chanhe", response);
+      await axios.post(`${url}/users/changePassword/${user._id}`, data, config);
+      toast("password changed successfully");
+      dispatch(modalActions.closeChangePasswordModal());
     } catch (err) {
-      console.log("errchg", err);
+      toast("password couldn't be changed");
     }
     dispatch(screenActions.stopLoading());
   };

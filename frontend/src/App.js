@@ -44,6 +44,7 @@ function App() {
           <Route path="/rewardsLog" element={<RewardsLog />} />
           <Route path="/faqs" element={<FAQs />} />
           <Route path="/resetpassword/:id/:token" element={<LandingPage />} />
+          <Route path="/oauth/:id/:token" element={<LandingPage />} />
           <Route path="/pageDetails/:id" element={<PageDetails />} />
         </Routes>
         <CreatePost />

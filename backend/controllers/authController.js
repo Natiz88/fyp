@@ -44,29 +44,21 @@ exports.signup = async (req, res) => {
 };
 
 exports.changePassword = async (req, res) => {
-  console.log("change p", req.body, req.params.id);
   try {
     const newUser = await User.findById(req.params.id);
     const newpassword = await bcrypt.hash(req.body.new_password, 12);
-    console.log("new", newpassword);
 
-    console.log("compare");
-    const isMatch = await newUser.validatePassword(req.body.new_password);
-    console.log("is", isMatch);
-    return;
-
-    if (!isPasswordCorrect) {
-      return res.status(400).json({
-        status: "failed",
-        message: "Current password doesnot match",
-      });
-    }
-    await User.findByIdandUpdate(req.params.id, {
-      password: req.body.new_password,
+    // if (!isMatch) {
+    //   return res.status(400).json({
+    //     status: "failed",
+    //     message: "Current password doesnot match",
+    //   });
+    // }
+    await User.findByIdAndUpdate(req.params.id, {
+      password: newpassword,
     });
     res.status(200).json({
       status: "success",
-      token,
       data: {
         message: "password changed successfully",
       },

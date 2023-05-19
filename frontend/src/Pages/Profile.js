@@ -16,6 +16,7 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import { loginActions } from "../Redux/LoginReducer";
+import AvatarImage from "./../Images/avatar.png";
 
 const Profile = () => {
   const [isLoading, setLoading] = useState(false);
@@ -45,6 +46,7 @@ const Profile = () => {
     }
     setLoading(false);
   };
+  console.log("contains", userProfile?.user_image.includes("https://"));
 
   return (
     <div className="w-full md:w-11/12 m-auto flex justify-between">
@@ -85,7 +87,12 @@ const Profile = () => {
             <div className="flex items-center justify-center py-4">
               <div className="rounded-full w-[120px] h-[120px] relative">
                 <img
-                  src={`${baseURL}/static/users/${userProfile?.user_image}`}
+                  src={
+                    userProfile?.user_image &&
+                    userProfile?.user_image.includes("https://")
+                      ? `${userProfile?.user_image}`
+                      : `${baseURL}/static/users/${userProfile?.user_image}`
+                  }
                   alt="profile"
                   className="w-full h-full rounded-full"
                 />
@@ -172,7 +179,9 @@ const Profile = () => {
                 </div>
               ))
             ) : (
-              <div>No Answers</div>
+              <div className="m-4 p-8 bg-white flex items-center justify-center rounded-lg">
+                No Answers{" "}
+              </div>
             ))}
           {tab === "about" && (
             <div className="bg-white m-4 rounded-lg py-8 px-16">

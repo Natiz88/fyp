@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../Redux/ModalReducer";
 import { Dialog } from "@mui/material";
 import ResetPassword from "./ResetPassword";
+import { loginActions } from "../Redux/LoginReducer";
+import jwtDecode from "jwt-decode";
+const sign = require("jwt-encode");
 
 const LandingPage = ({ openmodal }) => {
   const [page, setPage] = useState("");
@@ -22,6 +25,7 @@ const LandingPage = ({ openmodal }) => {
   const path = location.pathname.split("/");
 
   console.log("location", location.pathname.split("/")[1]);
+  console.log("location", location.pathname.split("/")[0]);
   // const query = new URLSearchParams(search);
   // const scroll = query.get("section");
   const dispatch = useDispatch();
@@ -34,13 +38,35 @@ const LandingPage = ({ openmodal }) => {
   //     window.scrollTo(0, 0);
   //   }
   // }, [scroll]);
+
+  const setLoginState = () => {
+    dispatch(loginActions.login());
+    dispatch(modalActions.closeLoginModal());
+  };
+
+  const userHandler = (data) => {
+    dispatch(loginActions.updateUser(data));
+  };
+
+  const userLogin = () => {
+    const userDetails = jwtDecode(path[3]);
+    localStorage.setItem("token", path[3]);
+    const jwt = sign(userDetails.user, "answerout123");
+    localStorage.setItem("user", jwt);
+    userHandler(userDetails.user);
+    setLoginState();
+  };
+
   useEffect(() => {
+    setUserId(path[2]);
+    setToken(path[3]);
     if (location.pathname.split("/")[1] === "resetpassword") {
       dispatch(modalActions.openResetPasswordModal());
-      setUserId(path[2]);
-      setToken(path[3]);
+    } else if (location.pathname.split("/")[1] === "oauth") {
+      userLogin();
     }
   }, []);
+  console.log("token useeff", path[2], token);
 
   return (
     <>

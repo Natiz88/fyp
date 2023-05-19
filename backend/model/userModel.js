@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const Questions = require("./questionsModel");
+const passportLocalMongoose = require("passport-local-mongoose");
+const findOrCreate = require("mongoose-findorcreate");
 
 const userSchema = new mongoose.Schema(
   {
@@ -81,8 +83,9 @@ userSchema.methods.correctPassword = async function validatePassword(data) {
   return bcrypt.compare(data, this.password);
 };
 
-userSchema.methods.getValue = function (c) {
-  return c;
+userSchema.methods.comparePassword = async function (passw) {
+  console.log("compare", passw, this.password);
+  console.log("bcrypt", await bcrypt.compare(passw, this.password));
 };
 
 // userSchema.virtual("fullName").get(function () {
@@ -103,6 +106,9 @@ userSchema.virtual("questionsAnswered", {
   foreignField: "user_id",
   localField: "_id",
 });
+
+userSchema.plugin(findOrCreate);
+userSchema.plugin(passportLocalMongoose);
 
 const User = mongoose.model("users", userSchema);
 

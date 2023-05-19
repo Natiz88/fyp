@@ -1,5 +1,6 @@
 const express = require("express");
 const passport = require("passport");
+const jwt = require("jsonwebtoken");
 
 const authRouter = express.Router();
 
@@ -38,9 +39,18 @@ authRouter.get(
 authRouter.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: CLIENT_URL,
+    // successRedirect: CLIENT_URL,
     failureRedirect: "/login/failed",
-  })
+    session: false,
+  }),
+  function (req, res) {
+    const user = req.user;
+    const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, {
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
+    });
+    console.log("token", req.user, token);
+    res.redirect(`${CLIENT_URL}/oauth/${user._id}/${token}`);
+  }
 );
 
 module.exports = authRouter;

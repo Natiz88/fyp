@@ -4,7 +4,11 @@ const adminAuth = require("./../middlewares/adminAuth");
 const { uploadGiftPhoto } = require("./../middlewares/giftImageUpload");
 
 const GiftRouter = express.Router();
-GiftRouter.route("/").post(uploadGiftPhoto, GiftsController.postGift);
+GiftRouter.route("/").post(
+  adminAuth,
+  uploadGiftPhoto,
+  GiftsController.postGift
+);
 GiftRouter.route("/").get(GiftsController.getGifts);
 GiftRouter.route("/").delete(GiftsController.deleteAllGifts);
 

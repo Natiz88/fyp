@@ -111,7 +111,7 @@ function Navbar() {
                   coins={coins}
                 />{" "}
                 {isNotificationsOpen && (
-                  <div className="absolute w-full overflow-auto bg-white min-h-[20px] max-h-[600px] px-8 py-4 rounded-md shadow-lg">
+                  <div className="absolute w-full overflow-auto bg-white min-h-[20px] max-h-[600px] px-8 py-4 rounded-md shadow-lg z-50">
                     {notifications.length > 0 ? (
                       <div>
                         <p className="text-xl font-bold py-2">Notifications</p>

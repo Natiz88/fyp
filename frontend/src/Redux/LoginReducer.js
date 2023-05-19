@@ -27,6 +27,7 @@ const loginSlice = createSlice({
       state.isLoggedIn = false;
     },
     updateUser(state, action) {
+      console.log("action", action.payload);
       state.userDetails = action.payload;
     },
     updateTeacher(state, action) {

@@ -55,7 +55,11 @@ const Notifications = ({
         <Avatar
           ref={clickRef}
           alt="img"
-          src={`${baseURL}/static/users/${user?.user_image}`}
+          src={
+            user?.user_image && user?.user_image.includes("https://")
+              ? `${user?.user_image}`
+              : `${baseURL}/static/users/${user?.user_image}`
+          }
           className="cursor-pointer"
         />
         {isDropdown && <AvatarDropdown />}

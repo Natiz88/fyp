@@ -123,7 +123,12 @@ function ProfileEdit({ userProfile, type, activeStep, changeStep, getUser }) {
                 className="z-0 w-full h-full absolute top-0 left-0 opacity-0"
               />
               <img
-                src={imgPreviews}
+                src={
+                  userProfile?.user_image &&
+                  userProfile?.user_image.includes("https://")
+                    ? `${userProfile?.user_image}`
+                    : `${baseURL}/static/users/${userProfile?.user_image}`
+                }
                 alt="img"
                 className="h-full w-full rounded-full"
               />
