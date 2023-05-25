@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { url } from "./../Constants/Url";
+import { url, baseURL } from "./../Constants/Url";
 
 const CommentDetail = ({ comment, user, deleteCommentSubmit }) => {
   const [open, setOpen] = useState(false);
@@ -77,7 +77,12 @@ const CommentDetail = ({ comment, user, deleteCommentSubmit }) => {
           >
             <img
               className="rounded-full w-[30px] h-[30px]"
-              src={`http://localhost:5000/static/users/${comment?.user_id?.user_image}`}
+              src={
+                comment?.user_id &&
+                comment?.user_id?.user_image.includes("https://")
+                  ? `${comment?.user_id?.user_image}`
+                  : `${baseURL}/static/users/${comment?.user_id?.user_image}`
+              }
               alt="img"
             />
             <div className="h-full ml-2 flex justify-between items-center">

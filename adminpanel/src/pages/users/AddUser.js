@@ -84,7 +84,7 @@ function AddUser() {
     setTimeout(() => {
       setUserAdded(false);
       history.push("/app/users");
-    }, 10000);
+    }, 1000);
     setModalMessage(message);
     setUserAdded(true);
   };

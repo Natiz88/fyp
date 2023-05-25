@@ -97,23 +97,16 @@ exports.getIndividualUser = async (req, res) => {
 // };
 
 exports.updateUser = async (req, res) => {
-  let { address, phone_number, full_name, bio } = req.body;
-  let user_image;
+  console.log("req.body", req.body);
   if (req.file) {
-    user_image = req.file.filename;
-  } else {
-    user_image = "avatar.png";
+    req.body.user_image = req.file.filename;
   }
 
   try {
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { address, phone_number, full_name, bio, user_image },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
     res.status(200).json({
       status: "successfull",
       data: {

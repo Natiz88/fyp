@@ -31,7 +31,7 @@ import axios from "axios";
 import { url, frontUrl } from "../../utils/URL";
 // import { toast } from "react-toastify";
 
-function ReportedAnswers() {
+function ReportedComments() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [reports, setReports] = useState([]);
@@ -52,11 +52,11 @@ function ReportedAnswers() {
     setReportDetailsModalOpen(false);
   };
 
-  const submitSuccess = () => {
+  const submitSuccess = (message) => {
     setTimeout(() => {
       setSubmitModalOpen(false);
     }, 1000);
-    setModalMessage("The answer was cleared");
+    setModalMessage(message);
     getreports();
     setSubmitModalOpen(true);
   };
@@ -71,34 +71,52 @@ function ReportedAnswers() {
 
   const getreports = async () => {
     try {
-      const response = await axios.get(`${url}/answers/ReportedAnswers`);
-      setReports(response?.data?.data?.answers);
+      const response = await axios.get(`${url}/comments/reportedComments`);
+      setReports(response?.data?.data?.comments);
+      console.log(response.data.data);
       setTotalPages(response?.data?.data?.totalPages);
     } catch (err) {
       console.log("uer", err);
     }
   };
 
-  const clearReportedAnswer = async (id) => {
+  const clearReportedcomment = async (id) => {
     try {
-      await axios.post(`${url}/answers/clearReportedAnswer/${id}`);
+      await axios.post(`${url}/comments/clearReportedComment/${id}`);
+      submitSuccess("The comment was cleared");
+    } catch (err) {
+      submitFailure(err);
+    }
+  };
+
+  const deleteComment = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          accept: "application/json",
+          authorization: `Bearer ${token}`,
+          contentType: "multipart/form-data",
+        },
+      };
+      await axios.post(`${url}/comments/deleteComment/${id}`, {}, config);
       submitSuccess();
     } catch (err) {
       submitFailure(err);
     }
   };
 
-  if (reports.length === 0) {
+  if (reports && reports.length === 0) {
     return (
       <div className="w-full h-full flex items-center justify-center">
-        <p>No Reported answers</p>
+        <p>No Reported comments</p>
       </div>
     );
   }
 
   return (
     <>
-      <PageTitle>Reported answers</PageTitle>
+      <PageTitle>Reported comments</PageTitle>
       <TableContainer className="mb-8">
         <Table>
           <TableHeader>
@@ -134,10 +152,10 @@ function ReportedAnswers() {
                       </div>
                     </TableCell>
                     <TableCell className="max-w-2xl overflow-hidden">
-                      <span className="text-sm">{report.answer_body}</span>
+                      <span className="text-sm">{report.comment_body}</span>
                     </TableCell>
                     <TableCell>
-                      <Badge>{report.answer_reports.length}</Badge>
+                      <Badge>{report.comment_reports.length}</Badge>
                     </TableCell>
                     <TableCell>
                       <span className="text-sm">
@@ -150,19 +168,10 @@ function ReportedAnswers() {
                           title="clear post"
                           size="icon"
                           aria-label="Edit"
-                          onClick={() => clearReportedAnswer(report._id)}
+                          onClick={() => clearReportedcomment(report._id)}
                         >
                           <MdDone className="w-5 h-5" aria-hidden="true" />
                         </Button>
-                        {/* <Button layout="link" size="icon" aria-label="view">
-                          <AiOutlineEye
-                            layout="Link"
-                            className="w-5 h-5"
-                            aria-hidden="true"
-                            title="view"
-                            href={`http://localhost:3000/pageDetails/${report?.question._id}`}
-                          />
-                        </Button> */}
                         <a
                           layout="link"
                           size="icon"
@@ -178,9 +187,10 @@ function ReportedAnswers() {
                         </a>
                         <Button layout="link" size="icon" aria-label="Edit">
                           <AiOutlineClose
-                            title="hide post"
+                            title="delete comment"
                             className="w-5 h-5"
                             aria-hidden="true"
+                            onClick={() => deleteComment(report._id)}
                           />
                         </Button>
                         {/* <Button layout="link" size="icon" aria-label="Edit">
@@ -217,4 +227,4 @@ function ReportedAnswers() {
   );
 }
 
-export default ReportedAnswers;
+export default ReportedComments;

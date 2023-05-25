@@ -68,7 +68,7 @@ const routes = [
     ],
   },
   {
-    icon: "PeopleIcon",
+    icon: "MoneyIcon",
     name: "Gifts",
     routes: [
       // submenu
@@ -79,6 +79,10 @@ const routes = [
       {
         path: "/app/addgifts/-1",
         name: "AddGift",
+      },
+      {
+        path: "/app/exchange",
+        name: "Exchanges",
       },
     ],
   },

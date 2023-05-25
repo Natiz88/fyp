@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import LeftSidebar from "./../components/LeftSideBar";
 import RightSidebar from "./../components/RightSideBar";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 import { url } from "./../Constants/Url";
 import { BsCoin } from "react-icons/bs";
@@ -47,7 +46,7 @@ const LeaderBoard = () => {
             <div className="flex items-center px-16 py-8 bg-lightBlue rounded-md text-white">
               <div className="absolute cursor-pointer top-8 right-8 flex flex-col">
                 <Link
-                  to="/exchangegift"
+                  to="/exchangegift/-1"
                   title="exchange gifts"
                   className="border border-black rounded-md p-1"
                 >

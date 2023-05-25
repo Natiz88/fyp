@@ -225,6 +225,7 @@ exports.downvoteAnswer = async (req, res) => {
 };
 
 exports.updateAnswer = async (req, res) => {
+  console.log("update answer", req.body);
   req.body.user_id = req.user_id;
   try {
     const answer = await Answers.findByIdAndUpdate(req.params.id, req.body, {
@@ -344,6 +345,22 @@ exports.reportedAnswers = async (req, res) => {
       data: {
         answers: reportedAnswers,
       },
+    });
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
+
+exports.clearReportedAnswer = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Answers.findByIdAndUpdate(id, {
+      $set: { answer_reports: [] },
+    });
+
+    res.status(200).json({
+      status: "successfull",
+      message: "The answer was cleared",
     });
   } catch (error) {
     res.status(500).json(error.message);

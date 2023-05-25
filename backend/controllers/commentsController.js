@@ -100,22 +100,23 @@ exports.updatecomment = async (req, res) => {
 };
 
 exports.deletecomment = async (req, res) => {
-  console.log("dele");
+  console.log("deletedcom");
   try {
     const findComment = await Comments.findById(req.params.id);
     if (String(findComment.user_id) !== String(req.user_id)) {
-      res.status(401).json({
-        message: "you are not authorized",
-      });
-    } else {
-      const comment = await Comments.findByIdAndDelete(req.params.id);
-      res.status(200).json({
-        status: "successfull",
-        data: {
-          comment,
-        },
-      });
+      if (findComment.user_role === "student") {
+        return res.status(401).json({
+          message: "you are not authorized",
+        });
+      }
     }
+    const comment = await Comments.findByIdAndDelete(req.params.id);
+    res.status(200).json({
+      status: "successfull",
+      data: {
+        comment,
+      },
+    });
   } catch (err) {
     res.status(400).json({
       status: "failed",
@@ -144,7 +145,6 @@ exports.reportComment = async (req, res) => {
 };
 
 exports.reportedComments = async (req, res) => {
-  console.log("reported");
   try {
     const reportedComments = await Comments.find({
       "comment_reports.0": { $exists: true },
@@ -157,8 +157,24 @@ exports.reportedComments = async (req, res) => {
       status: "successfull",
       results: reportedComments.length,
       data: {
-        questions: reportedComments,
+        comments: reportedComments,
       },
+    });
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
+
+exports.clearReportedComment = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Comments.findByIdAndUpdate(id, {
+      $set: { comment_reports: [] },
+    });
+
+    res.status(200).json({
+      status: "successfull",
+      message: "The comment was cleared",
     });
   } catch (error) {
     res.status(500).json(error.message);

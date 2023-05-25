@@ -8,7 +8,7 @@ const Footer = () => {
   const year = new Date().getFullYear();
   return (
     <div className="w-full py-12 lg:px-32 bg-black text-white">
-      <div className="flex justify-around">
+      <div className="flex flex-column md:flex-row justify-around">
         <div className="w-1/4">
           <p
             className="cursor-pointer py-2"

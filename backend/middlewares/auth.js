@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const auth = async (req, res, next) => {
   try {
-    console.log("re", req.headers.authorization);
+    console.log("upda");
     const authHeader = req.headers.authorization || req.headers.Authorization;
 
     if (!authHeader?.startsWith("Bearer"))
@@ -21,7 +21,8 @@ const auth = async (req, res, next) => {
       return res.status(401).json({ msg: "You are not authorized" });
     }
 
-    const user = await User.findOne({ _id: decoded.id });
+    const user = await User.findOne({ _id: decoded.id || decoded.user._id });
+    console.log("dec", user);
 
     req.user_id = user._id;
     req.user_role = user.user_role;

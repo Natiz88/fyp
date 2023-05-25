@@ -48,13 +48,10 @@ function Login() {
     window.open("http://localhost:5000/auth/google", "_self");
     // const response = await axios.get("http://localhost:5000/auth/logins");
     // console.log("log", response);
-    localStorage.setItem("log", "response");
   };
 
   const location = useLocation();
   const rePath = location.state?.from?.pathname || "/";
-
-  console.log("path", rePath);
 
   const validationSchema = Yup.object({
     email: Yup.string().email("please enter a valid email"),
@@ -209,10 +206,10 @@ function Login() {
               )}
             </Grid>
           </Grid>
-          <FormControlLabel
+          {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
-          />
+          /> */}
           <Button
             type="submit"
             variant="contained"

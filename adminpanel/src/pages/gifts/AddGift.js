@@ -96,12 +96,9 @@ const AddGift = () => {
         contentType: "multipart/form-data",
       },
     };
-    const formData = new FormData();
-    formData.append("gift_name", signupFormik.values.gift_name);
-    formData.append("gift_price", signupFormik.values.gift_price);
-    formData.append("gift_image", giftImage);
+
     try {
-      await axios.put(`${url}/gifts/${gift?._id}`, formData, config);
+      await axios.put(`${url}/gifts/${gift?._id}`, body, config);
       giftAddedSuccess("The gift was updated");
     } catch (err) {
       giftAddedError(err);

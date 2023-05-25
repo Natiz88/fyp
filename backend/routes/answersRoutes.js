@@ -11,12 +11,20 @@ answersRouter
 answersRouter.route("/").get(answersController.getAnswers);
 
 answersRouter
+  .route("/editAnswer/:id")
+  .put(auth, answersController.updateAnswer);
+
+answersRouter
   .route("/acceptAnswer/:id")
   .put(auth, answersController.acceptAnswer);
 
 answersRouter
   .route("/reportAnswer/:id")
   .put(auth, answersController.reportAnswer);
+
+answersRouter
+  .route("/clearReportedAnswer/:id")
+  .post(answersController.clearReportedAnswer);
 
 answersRouter.route("/reportedAnswers").get(answersController.reportedAnswers);
 

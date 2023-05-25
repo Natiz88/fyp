@@ -21,9 +21,13 @@ function ProfileEdit({ userProfile, type, activeStep, changeStep, getUser }) {
 
   useEffect(() => {
     setImages(userProfile?.user_image);
-    setImgPreviews(
-      `${baseURL}/static/users/${userProfile?.user_image}` || Avatar
-    );
+    if (userProfile && userProfile.user_image.includes("https://")) {
+      setImgPreviews(userProfile?.user_image || Avatar);
+    } else {
+      setImgPreviews(
+        `${baseURL}/static/users/${userProfile?.user_image}` || Avatar
+      );
+    }
   }, []);
 
   const onImageChange = (e) => {
@@ -90,7 +94,8 @@ function ProfileEdit({ userProfile, type, activeStep, changeStep, getUser }) {
       getUser();
       toast("Profile updated successfully");
     } catch (err) {
-      console.log(err);
+      toast("An error occured");
+      console.log("proerr", err);
     }
   };
 
@@ -123,12 +128,7 @@ function ProfileEdit({ userProfile, type, activeStep, changeStep, getUser }) {
                 className="z-0 w-full h-full absolute top-0 left-0 opacity-0"
               />
               <img
-                src={
-                  userProfile?.user_image &&
-                  userProfile?.user_image.includes("https://")
-                    ? `${userProfile?.user_image}`
-                    : `${baseURL}/static/users/${userProfile?.user_image}`
-                }
+                src={imgPreviews}
                 alt="img"
                 className="h-full w-full rounded-full"
               />

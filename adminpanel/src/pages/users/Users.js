@@ -212,14 +212,14 @@ function Users() {
                             aria-hidden="true"
                           />
                         </Button>
-                        <Button
+                        {/* <Button
                           layout="outline"
                           size="icon"
                           title="send email"
                           onClick={() => sendEmail(user?._id)}
                         >
                           <ChatIcon className="w-5 h-5`" aria-hidden="true" />
-                        </Button>
+                        </Button> */}
                       </div>
                     </TableCell>
                   </TableRow>

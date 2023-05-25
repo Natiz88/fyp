@@ -3,7 +3,7 @@ import { TextField, Button } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
-import { url } from "./../Constants/Url";
+import { url, baseURL } from "./../Constants/Url";
 
 const AnswerInput = ({
   question,
@@ -11,6 +11,8 @@ const AnswerInput = ({
   img = [],
   body = "",
   editMode = false,
+  answer_id,
+  closeAnswerDialog,
 }) => {
   const [images, setImages] = useState(img);
   const [imgPreviews, setImgPreviews] = useState(img);
@@ -39,6 +41,31 @@ const AnswerInput = ({
     setImgPreviews([]);
     setAnswerBody("");
     return postAnswerSubmit(data);
+  };
+
+  const editAnswerData = async () => {
+    try {
+      const data = { answer_id, answer_body: answerBody };
+      setImgPreviews([]);
+      setAnswerBody("");
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          accept: "application/json",
+          authorization: `Bearer ${token}`,
+          contentType: "multipart/form-data",
+        },
+      };
+      const response = await axios.put(
+        `${url}/answers/editAnswer/${answer_id}`,
+        data,
+        config
+      );
+      console.log("ansenit", response);
+    } catch (err) {
+      console.log(err);
+    }
+    closeAnswerDialog();
   };
 
   return (
@@ -81,7 +108,10 @@ const AnswerInput = ({
           )}
         </div>
         <div className="w-full flex justify-end p-2">
-          <Button variant="contained" onClick={postAnswerData}>
+          <Button
+            variant="contained"
+            onClick={editMode ? editAnswerData : postAnswerData}
+          >
             Post
           </Button>
         </div>

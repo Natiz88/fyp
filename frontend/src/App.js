@@ -33,13 +33,25 @@ function App() {
   return (
     <div className="bg-secondary">
       <BrowserRouter>
+        <ToastContainer
+          position="top-right"
+          autoClose={1000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <Navbar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/BrowsePosts" element={<BrowsePosts />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/leaderboard" element={<LeaderBoard />} />
-          <Route path="/exchangegift" element={<ExchangeGift />} />
+          <Route path="/exchangegift/:id" element={<ExchangeGift />} />
           <Route path="/teacherSignup" element={<TeacherSignup />} />
           <Route path="/rewardsLog" element={<RewardsLog />} />
           <Route path="/faqs" element={<FAQs />} />

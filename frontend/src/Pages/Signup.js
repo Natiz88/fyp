@@ -109,6 +109,12 @@ function Signup({ type, activeStep, changeStep }) {
     }
   };
 
+  const google = async () => {
+    window.open("http://localhost:5000/auth/google", "_self");
+    // const response = await axios.get("http://localhost:5000/auth/logins");
+    // console.log("log", response);
+  };
+
   const toTeacherSignup = () => {
     dispatch(modalActions.closeSignupModal());
     navigate("/teacherSignup");
@@ -271,9 +277,10 @@ function Signup({ type, activeStep, changeStep }) {
               variant="outlined"
               startIcon={<GoogleIcon />}
               fullWidth
+              onClick={google}
               sx={{ p: 1.5 }}
             >
-              Sign up with Google
+              Continue with Google
             </Button>
           </div>
         )}

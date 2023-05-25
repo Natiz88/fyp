@@ -15,6 +15,7 @@ const AddUser = lazy(() => import("../pages/users/AddUser"));
 const FAQs = lazy(() => import("../pages/faqs"));
 const Messages = lazy(() => import("../pages/Messages"));
 const AddFAQs = lazy(() => import("../pages/faqs/AddFaq"));
+const Exchange = lazy(() => import("../pages/exchange/Exchange"));
 const PendingVerifications = lazy(() =>
   import("../pages/PendingVerifications")
 );
@@ -22,6 +23,9 @@ const ReportedQuestions = lazy(() =>
   import("../pages/reports/ReportedQuestions")
 );
 const ReportedAnswers = lazy(() => import("../pages/reports/ReportedAnswers"));
+const ReportedComments = lazy(() =>
+  import("../pages/reports/ReportedComments")
+);
 const Gifts = lazy(() => import("../pages/gifts/Gifts"));
 const AddGift = lazy(() => import("../pages/gifts/AddGift"));
 
@@ -85,6 +89,10 @@ const routes = [
     component: FAQs,
   },
   {
+    path: "/exchange",
+    component: Exchange,
+  },
+  {
     path: "/addfaqs/:id",
     component: AddFAQs,
   },
@@ -103,6 +111,10 @@ const routes = [
   {
     path: "/reportedAnswers",
     component: ReportedAnswers,
+  },
+  {
+    path: "/reportedComments",
+    component: ReportedComments,
   },
   {
     path: "/gifts",

@@ -105,7 +105,12 @@ const Post = ({ singleQuestion, getQuestions }) => {
               <Link to={`/profile/${question?.user_id?._id}`} className="flex">
                 <img
                   className="rounded-full w-[40px] h-[40px]"
-                  src={`${baseURL}/static/users/${question?.user_id?.user_image}`}
+                  src={
+                    question?.user_id &&
+                    question?.user_id?.user_image.includes("https://")
+                      ? `${question?.user_id?.user_image}`
+                      : `${baseURL}/static/users/${question?.user_id?.user_image}`
+                  }
                   alt="img"
                 />
                 <div className="h-full ml-2">

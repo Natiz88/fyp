@@ -164,6 +164,26 @@ const PageDetails = () => {
     }
   );
 
+  const editAnswerMutation = useMutation(
+    async (data) => {
+      console.log("ediiitt");
+      await axios.post(
+        `${url}/answers/editAnswer/${data?.answer_id}`,
+        data,
+        config
+      );
+    },
+    {
+      onSuccess: async () => {
+        await socket.emit("changePostContent", question?._id);
+        toast("Answer edited successfully");
+      },
+      onError: () => {
+        toast("An error occured");
+      },
+    }
+  );
+
   const likePostMutation = useMutation(
     async () => {
       await axios.put(`${url}/questions/like/${question?._id}`, {}, config);
@@ -260,6 +280,10 @@ const PageDetails = () => {
     }
     postAnswerMutation.mutate(data);
   };
+
+  const editAnswerSubmit = (data) => {
+    editAnswerMutation.mutate(data);
+  };
   const likePostSubmit = () => {
     if (!isLoggedIn) {
       dispatch(modalActions.openLoginModal());
@@ -327,7 +351,12 @@ const PageDetails = () => {
                   >
                     <img
                       className="rounded-full w-[40px] h-[40px]"
-                      src={`${baseURL}/static/users/${question?.user_id?.user_image}`}
+                      src={
+                        question?.user_id &&
+                        question?.user_id?.user_image.includes("https://")
+                          ? `${question?.user_id?.user_image}`
+                          : `${baseURL}/static/users/${question?.user_id?.user_image}`
+                      }
                       alt="img"
                     />
                     <div className="h-full ml-2">
@@ -442,6 +471,7 @@ const PageDetails = () => {
                           upvoteAnswerSubmit={upvoteAnswerSubmit}
                           downvoteAnswerSubmit={downvoteAnswerSubmit}
                           deleteAnswerSubmit={deleteAnswerSubmit}
+                          editAnswerSubmit={editAnswerSubmit}
                         />
                       </div>
                     ))}

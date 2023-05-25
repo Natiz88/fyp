@@ -76,25 +76,30 @@ exports.postExchange = async (req, res) => {
       });
     }
     const price = await Gift.findById(gift_id);
-    await User.findByIdAndUpdate(user_id, {
-      $inc: { coins: -price.gift_price },
-    });
-    await RewardLog.create({
-      value: 10,
-      title: "You exchanged a gift",
-      type: "gift",
-      user_id: user_id,
-    });
-    const newExchange = await Exchange.create({
-      user_id: user_id,
-      gift: gift_id,
-    });
-    res.status(201).json({
-      status: "success",
-      data: {
-        Exchanges: newExchange,
-      },
-    });
+    const user = await User.findById(user_id);
+    if (price.gift_price > user.coins) {
+      res.status(404).json({ message: "failed" });
+    } else {
+      await User.findByIdAndUpdate(user_id, {
+        $inc: { coins: -price.gift_price },
+      });
+      await RewardLog.create({
+        value: 10,
+        title: "You exchanged a gift",
+        type: "gift",
+        user_id: user_id,
+      });
+      const newExchange = await Exchange.create({
+        user_id: user_id,
+        gift: gift_id,
+      });
+      res.status(201).json({
+        status: "success",
+        data: {
+          Exchanges: newExchange,
+        },
+      });
+    }
   } catch (err) {
     res.status(400).json({
       status: "failed",

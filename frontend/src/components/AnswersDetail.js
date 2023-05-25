@@ -23,6 +23,7 @@ import { screenActions } from "../Redux/ScreenReducer";
 import AnswerInput from "./AnswerInput";
 import Button from "@mui/material/Button";
 import { AiFillCaretUp, AiFillCaretDown } from "react-icons/ai";
+import Avatar from "./../Images/avatar.png";
 
 const AnswersDetail = ({
   singleAnswer,
@@ -31,6 +32,7 @@ const AnswersDetail = ({
   upvoteAnswerSubmit,
   downvoteAnswerSubmit,
   replyAnswerSubmit,
+  editAnswerSubmit,
   question,
 }) => {
   const user = useSelector((state) => state.login.userDetails);
@@ -42,9 +44,20 @@ const AnswersDetail = ({
   const [isCommentOpen, setCommentOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const createdAt = GetDate(answer?.createdAt);
+  const [imagePreview, setImagePreview] = useState(false);
 
   useEffect(() => {
     setAnswer(singleAnswer);
+    if (
+      answer.user_id.user_image &&
+      answer.user_id.user_image.includes("https")
+    ) {
+      setImagePreview(answer?.user_id?.user_image);
+    } else if (answer.user_id.user_image) {
+      setImagePreview(`${baseURL}/static/users/${answer?.user_id?.user_image}`);
+    } else {
+      setImagePreview(Avatar);
+    }
   }, [acceptAnswerSubmit, replyAnswerSubmit]);
 
   const postComment = async () => {
@@ -93,6 +106,9 @@ const AnswersDetail = ({
   const downvoteAnswer = () => {
     downvoteAnswerSubmit(singleAnswer?._id);
   };
+  const closeAnswerDialog = () => {
+    setEditAnswerOpen(false);
+  };
 
   return (
     <div className="w-full flex px-8 overflow-hidden py-4 my-4">
@@ -120,7 +136,12 @@ const AnswersDetail = ({
           >
             <img
               className="rounded-full w-[30px] h-[30px]"
-              src={`${baseURL}/static/users/${answer?.user_id?.user_image}`}
+              // src={
+              //   answer && answer?.user_id?.user_image.includes("https://")
+              //     ? `${answer?.user_id?.user_image}`
+              //     : `${baseURL}/static/users/${answer?.user_id?.user_image}`
+              // }
+              src={imagePreview}
               alt="img"
             />
             <div className="h-full ml-2 flex justify-between items-center">
@@ -227,7 +248,13 @@ const AnswersDetail = ({
       >
         <div className="lg:w-[600px] p-2">
           <h1 className="font-bold py-2 pl-2 md:text-lg">Edit your answer</h1>
-          <AnswerInput body={answer?.answer_body} img={answer?.answer_image} />
+          <AnswerInput
+            body={answer?.answer_body}
+            editMode={true}
+            answer_id={answer?._id}
+            img={answer?.answer_image}
+            closeAnswerDialog={closeAnswerDialog}
+          />
         </div>
       </Dialog>{" "}
       <Dialog open={open} onClose={() => setOpen(false)}>

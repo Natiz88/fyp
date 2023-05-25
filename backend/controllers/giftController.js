@@ -97,6 +97,7 @@ exports.postGift = async (req, res) => {
 };
 
 exports.updateGift = async (req, res) => {
+  console.log("gif", req.body);
   try {
     const allGifts = await Gift.findByIdAndUpdate(req.params.id, req.body);
     res.status(200).json({

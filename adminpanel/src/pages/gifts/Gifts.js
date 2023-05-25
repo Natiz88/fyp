@@ -198,8 +198,7 @@ function Gifts() {
                           aria-label="Edit"
                           title="delete message"
                           onClick={() => {
-                            setgift(gift);
-                            setgiftDeleteModalOpen(true);
+                            deleteGift(gift._id);
                           }}
                         >
                           <TrashIcon className="w-5 h-5" aria-hidden="true" />

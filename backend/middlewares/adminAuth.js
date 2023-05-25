@@ -2,6 +2,7 @@ const User = require("../model/userModel");
 const jwt = require("jsonwebtoken");
 
 const adminAuth = async (req, res, next) => {
+  console.log("ad", req.body);
   try {
     const authHeader = req.headers.authorization || req.headers.Authorization;
     if (!authHeader?.startsWith("Bearer"))

@@ -5,6 +5,9 @@ const commentsController = require("./../controllers/commentsController");
 const commentsRouter = express.Router();
 
 commentsRouter.route("/").post(auth, commentsController.postcomment);
+commentsRouter
+  .route("/reportedComments")
+  .get(commentsController.reportedComments);
 
 commentsRouter.route("/:id").get(commentsController.getIndividualComment);
 
@@ -17,7 +20,7 @@ commentsRouter
   .put(auth, commentsController.reportComment);
 
 commentsRouter
-  .route("/reportedComments")
-  .get(commentsController.reportedComments);
+  .route("/clearReportedComment/:id")
+  .post(commentsController.clearReportedComment);
 
 module.exports = commentsRouter;
