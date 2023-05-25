@@ -79,7 +79,7 @@ const LandingPage = ({ openmodal }) => {
                 Better <span className="text-primary">Solutions</span>
               </span>
             </p>
-            <div className="w-full mt-2 md:mt-8 md:pr-8 flex text-sm mb-8 md:mb-0">
+            <div className="w-full text-center mt-2 md:mt-8 md:pr-8 flex text-sm mb-8 md:mb-0">
               <Link to="/BrowsePosts">
                 <Button variant="outlined" sx={{ color: "#6CD8F0" }}>
                   Browse Questions

@@ -6,10 +6,11 @@ import Tags from "./Tags";
 import { url, baseURL } from "./../Constants/Url";
 import { Avatar } from "@mui/material";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
-
-import LeftSidebar from "./LeftSideBar";
+import LeftSidebarContent from "./LeftSidebarContent";
 import LoginIcon from "@mui/icons-material/Login";
 import { modalActions } from "../Redux/ModalReducer";
+import useOutsideClick from "../hooks/useOutsideClick";
+import { sidebarActions } from "../Redux/SidebarReducer";
 
 const SideBar = () => {
   const dispatch = useDispatch();
@@ -17,8 +18,21 @@ const SideBar = () => {
   const isSidebarOpen = useSelector((state) => state.sidebar.isSidebarOpen);
   const user = useSelector((state) => state.login.userDetails);
 
+  const logoutHandler = () => {
+    dispatch(loginActions.logout());
+  };
+
+  const handleClickOutside = () => {
+    if (isSidebarOpen) {
+      dispatch(sidebarActions.closeSidebar());
+    }
+  };
+
+  const clickRef = useOutsideClick(handleClickOutside);
+
   return (
     <div
+      ref={clickRef}
       className={`${
         isSidebarOpen ? "right-0" : "-right-full"
       } lg:hidden fixed w-2/4 md:w-2/5 h-screen bg-white text-black shadow-lg z-1000 top-[120px] prose transition-right duration-500 ease-in-out`}
@@ -37,7 +51,7 @@ const SideBar = () => {
               className="cursor-pointer m-auto my-4"
             />
           </Link>
-          <div className="w-full flex flex-col px-8 py-4 text-md md:text-lg border-grayLight">
+          <div className="w-full flex flex-col items-center px-8 py-2 text-md md:text-lg border-grayLight">
             <Link to={`/profile/${user._id}`} className="no-underline">
               <div className="cursor-pointer py-2 m-auto ">Profile</div>
             </Link>
@@ -49,13 +63,13 @@ const SideBar = () => {
                 Change Password
               </div>
             </Link>
-            <Link to="/" className="no-underline">
+            <Link to="/" className="no-underline" onClick={logoutHandler}>
               <div className="cursor-pointer py-2 m-auto ">Logout</div>
             </Link>
           </div>
         </div>
       ) : (
-        <div className="w-full px-8 pt-4">
+        <div className="w-full flex flex-col items-center px-8 py-2 text-md md:text-lg border-grayLight">
           <button
             className="flex justify-between border border-primary lg:border-white rounded-sm text-primary lg:text-white text-md font-medium px-[30px] lg:px-4 py-2 my-4 lg:my-2"
             onClick={() => dispatch(modalActions.openLoginModal())}
@@ -72,9 +86,23 @@ const SideBar = () => {
           </button>
         </div>
       )}
-      <LeftSidebar />
-
-      <div className="px-8"> {/* <Tags /> */}</div>
+      <hr />
+      <div className="w-full flex flex-col items-center px-8 py-2 text-md md:text-lg border-grayLight">
+        <Link to="/" className="no-underline">
+          <p className="font-semibold text-base py-1 cursor-pointer">Home</p>
+        </Link>
+        <Link to="/BrowsePosts" className="no-underline">
+          <p className="font-semibold text-base py-1 cursor-pointer">
+            All Questions
+          </p>
+        </Link>
+        <p
+          onClick={() => dispatch(modalActions.openPostModal())}
+          className="font-semibold text-base py-1 cursor-pointer"
+        >
+          Ask Question
+        </p>
+      </div>{" "}
     </div>
   );
 };

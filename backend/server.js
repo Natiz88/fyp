@@ -13,6 +13,7 @@ const rewardsRouter = require("./routes/rewardsRoutes");
 const rewardLogRouter = require("./routes/rewardLogRoutes");
 const FAQRouter = require("./routes/faqRoutes");
 const GiftRouter = require("./routes/giftRoutes");
+const ExchangeRouter = require("./routes/exchangeRoute");
 const authRouter = require("./routes/authRoutes");
 const contactsRouter = require("./routes/contactsRoutes");
 const dotenv = require("dotenv");
@@ -39,6 +40,7 @@ app.use(
   "/static/answers",
   express.static(path.join(__dirname, "uploads/answers"))
 );
+app.use("/static/gifts", express.static(path.join(__dirname, "uploads/gifts")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -166,6 +168,7 @@ app.use("/api/v1/rewardLog", rewardLogRouter);
 app.use("/api/v1/contacts", contactsRouter);
 app.use("/api/v1/faq", FAQRouter);
 app.use("/api/v1/gifts", GiftRouter);
+app.use("/api/v1/exchange", ExchangeRouter);
 app.use("/auth", authRouter);
 
 app.get("/*", (req, res) => {

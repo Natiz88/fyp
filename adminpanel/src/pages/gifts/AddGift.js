@@ -9,6 +9,7 @@ import { url } from "../../utils/URL";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import GiftImage from "./../../assets/img/gift.PNG";
 
 const AddGift = () => {
   const [isError, setError] = useState(false);
@@ -18,6 +19,8 @@ const AddGift = () => {
   const [isgiftAdded, setgiftAdded] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [giftImage, setGiftImage] = useState();
+  const [imgPreview, setImgPreview] = useState(GiftImage);
 
   const history = useHistory();
   useEffect(() => {
@@ -30,8 +33,10 @@ const AddGift = () => {
   const getgift = async () => {
     try {
       const response = await axios.get(`${url}/gifts/${id}`);
-      console.log("re", response);
-      setgift(response?.data?.data?.gifts);
+      setImgPreview(
+        `http://localhost:5000/static/gifts/${response?.data?.data?.gift?.gift_image}`
+      );
+      setgift(response?.data?.data?.gift);
     } catch (err) {
       console.log(err);
     }
@@ -82,7 +87,7 @@ const AddGift = () => {
   const updategift = async (e) => {
     e.preventDefault();
     setError(false);
-    const body = { ...signupFormik.values };
+    const body = { ...signupFormik.values, gift_image: giftImage };
     const token = localStorage.getItem("token");
     const config = {
       headers: {
@@ -91,8 +96,12 @@ const AddGift = () => {
         contentType: "multipart/form-data",
       },
     };
+    const formData = new FormData();
+    formData.append("gift_name", signupFormik.values.gift_name);
+    formData.append("gift_price", signupFormik.values.gift_price);
+    formData.append("gift_image", giftImage);
     try {
-      await axios.put(`${url}/gifts/${gift?._id}`, body, config);
+      await axios.put(`${url}/gifts/${gift?._id}`, formData, config);
       giftAddedSuccess("The gift was updated");
     } catch (err) {
       giftAddedError(err);
@@ -109,13 +118,27 @@ const AddGift = () => {
         contentType: "multipart/form-data",
       },
     };
-    const body = signupFormik.values;
+    const formData = new FormData();
+    formData.append("gift_name", signupFormik.values.gift_name);
+    formData.append("gift_price", signupFormik.values.gift_price);
+    formData.append("gift_image", giftImage);
     try {
-      await axios.post(`${url}/gifts`, body, config);
+      await axios.post(`${url}/gifts`, formData, config);
+      console.log("success");
       giftAddedSuccess("The gift was added");
     } catch (err) {
       giftAddedError(err);
     }
+  };
+
+  const onImageChange = (e) => {
+    const file = e.target.files[0];
+    setGiftImage(file);
+    onPreviews(file);
+  };
+
+  const onPreviews = (file) => {
+    setImgPreview(URL.createObjectURL(file));
   };
 
   return (
@@ -132,6 +155,37 @@ const AddGift = () => {
             className="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
           >
             {isError && <h1 className="text-red-500 my-3">{errorMessage}</h1>}
+
+            {/* <div className="py-4 relative bg-green-400">
+              <div className="w-full h-full">
+                <span>Gift Image</span>
+                <img
+                  src={
+                    imgPreview
+                    // gift?.gift_image
+                    //   ? `http://localhost:5000/static/gifts/${gift?.gift_image}`
+                    //   : GiftImage
+                  }
+                  width={150}
+                  height={150}
+                />
+              </div>
+              <input type="file" onChange={onImageChange} />
+              {/* <div className="absolute w-full h-full -z-1 bg-yellow-200">
+                <input className="w-full h-full" type="img" />
+              </div> */}
+
+            <div className="flex py-2">
+              <div className="w-50 h-40 rounded-full bg-primary relative">
+                <input
+                  type="file"
+                  required={id < 0 ? true : false}
+                  onChange={onImageChange}
+                  className="z-0 w-full h-full absolute top-0 left-0 opacity-0"
+                />
+                <img src={imgPreview} alt="img" className="h-full w-full " />
+              </div>
+            </div>
 
             <Label>
               <span>Name</span>

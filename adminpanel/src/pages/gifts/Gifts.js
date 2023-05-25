@@ -38,6 +38,7 @@ function Gifts() {
   const [gift, setgift] = useState();
   const [modalMessage, setModalMessage] = useState("");
   const [isgiftDetailsModalOpen, setgiftDetailsModalOpen] = useState(false);
+  const [isgiftDeleteModalOpen, setgiftDeleteModalOpen] = useState(false);
   const [isSubmitModalOpen, setSubmitModalOpen] = useState(false);
 
   function onPageChange(p) {
@@ -55,17 +56,17 @@ function Gifts() {
   const submitSuccess = (message) => {
     setTimeout(() => {
       setSubmitModalOpen(false);
+      getGifts();
     }, 1000);
     setModalMessage(message);
-    getGifts();
     setSubmitModalOpen(true);
   };
-  const submitFailure = (err) => {
+  const submitFailure = (message) => {
     setTimeout(() => {
       setSubmitModalOpen(false);
       return;
     }, 1000);
-    setModalMessage(err.response.data.message || "An error occured");
+    setModalMessage(message);
     setSubmitModalOpen(true);
   };
   const token = localStorage.getItem("token");
@@ -88,29 +89,10 @@ function Gifts() {
     }
   };
 
-  const cleargiftedQuestion = async (id) => {
-    console.log(id);
-    try {
-      await axios.post(`${url}/questions/cleargiftedQuestion/${id}`);
-      submitSuccess("The question was cleared");
-    } catch (err) {
-      submitFailure(err);
-    }
-  };
-  const hideQuestion = async (id) => {
-    console.log(id);
-    try {
-      await axios.post(`${url}/questions/hideQuestion/${id}`, {}, config);
-      submitSuccess("The question was hidden");
-    } catch (err) {
-      submitFailure(err);
-    }
-  };
-
   if (gifts.length === 0) {
     return (
       <div className="w-full h-full flex items-center justify-center">
-        <p>No Gifts Yet</p>
+        <p className="pt-20">No Gifts Yet</p>
       </div>
     );
   }
@@ -118,7 +100,9 @@ function Gifts() {
   const deleteGift = async (id) => {
     try {
       const response = await axios.delete(`${url}/gifts/${id}`);
+      submitSuccess("Gift was deleted");
     } catch (err) {
+      // submitFailure("An error occured");
       console.log("uer", err);
     }
   };
@@ -126,11 +110,17 @@ function Gifts() {
   return (
     <>
       <PageTitle>Gifts</PageTitle>
+      <div className="">
+        <Button iconRight={FormsIcon} tag={Link} to={`/app/addgifts/-1`}>
+          <span>Add Gift</span>
+        </Button>
+      </div>
       <TableContainer className="mb-8">
         <Table>
           <TableHeader>
             <tr>
-              <TableCell>Posted By</TableCell>
+              <TableCell>Added By</TableCell>
+              <TableCell>Image</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Price</TableCell>
               <TableCell>Created Date</TableCell>
@@ -145,17 +135,26 @@ function Gifts() {
                   <TableRow key={gift._id}>
                     <TableCell>
                       <div className="flex items-center text-sm">
-                        {/* <Avatar
+                        <Avatar
                           className="hidden mr-3 md:block"
-                          src={`http://localhost:5000/static/users/${gifts?.user_id?.user_image}`}
+                          src={`http://localhost:5000/static/users/${gift?.added_by.user_image}`}
                           alt="gift avatar"
-                        /> */}
+                        />
                         <div>
                           <p className="font-semibold">
-                            {gift?.added_by || "admin"}
+                            {gift?.added_by?.full_name || "admin"}
                           </p>
                         </div>
                       </div>
+                    </TableCell>
+                    <TableCell className=" overflow-hidden">
+                      <img
+                        className="hidden mr-3 md:block"
+                        src={`http://localhost:5000/static/gifts/${gift?.gift_image}`}
+                        width={80}
+                        height={80}
+                        alt="gift"
+                      />
                     </TableCell>
                     <TableCell className=" overflow-hidden">
                       <span className="text-sm">{gift.gift_name}</span>
@@ -173,7 +172,7 @@ function Gifts() {
                         <Button
                           tag={Link}
                           layout="outline"
-                          to={`/app/addGift/${gift._id}`}
+                          to={`/app/addgifts/${gift._id}`}
                           size="icon"
                           aria-label="Edit"
                         >
@@ -198,7 +197,10 @@ function Gifts() {
                           layout="outline"
                           aria-label="Edit"
                           title="delete message"
-                          onClick={() => deleteGift(gift._id)}
+                          onClick={() => {
+                            setgift(gift);
+                            setgiftDeleteModalOpen(true);
+                          }}
                         >
                           <TrashIcon className="w-5 h-5" aria-hidden="true" />
                         </Button>
@@ -225,6 +227,32 @@ function Gifts() {
         </ModalBody>
       </Modal>
       <Modal isOpen={isSubmitModalOpen}>{modalMessage}</Modal> */}
+      <Modal
+        isOpen={isSubmitModalOpen}
+        onClose={() => setSubmitModalOpen(false)}
+      >
+        <ModalBody>{modalMessage}</ModalBody>
+      </Modal>
+      <Modal
+        isOpen={isgiftDeleteModalOpen}
+        onClose={() => setgiftDeleteModalOpen(false)}
+      >
+        <ModalHeader>Delete Gift</ModalHeader>
+        <ModalBody>Are you sure you want to delete this gift</ModalBody>
+        <ModalFooter>
+          <div className="hidden sm:block">
+            <Button
+              layout="outline"
+              onClick={() => setgiftDeleteModalOpen(false)}
+            >
+              Cancel
+            </Button>
+          </div>
+          <div className="hidden sm:block">
+            <Button onClick={deleteGift(gift?._id)}>yes</Button>
+          </div>
+        </ModalFooter>
+      </Modal>
     </>
   );
 }

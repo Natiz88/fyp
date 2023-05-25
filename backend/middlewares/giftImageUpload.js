@@ -11,6 +11,7 @@ const multerStorage = multer.diskStorage({
     cb(null, "uploads/gifts");
   },
   filename: (req, file, cb) => {
+    console.log("gifted");
     const ext = MIME_TYPE_MAP[file.mimetype];
     cb(null, `gift-${req.user_id}-${Date.now()}.${ext}`);
   },

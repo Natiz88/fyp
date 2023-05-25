@@ -77,7 +77,7 @@ const routes = [
         name: "Gifts",
       },
       {
-        path: "/app/addgift/-1",
+        path: "/app/addgifts/-1",
         name: "AddGift",
       },
     ],

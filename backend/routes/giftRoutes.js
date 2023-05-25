@@ -13,7 +13,7 @@ GiftRouter.route("/").get(GiftsController.getGifts);
 GiftRouter.route("/").delete(GiftsController.deleteAllGifts);
 
 GiftRouter.route("/:id")
-  //   .get(GiftController.getIndividualGift)
+  .get(GiftsController.getIndividualGift)
   .put(adminAuth, GiftsController.updateGift)
   .delete(GiftsController.deleteGift);
 

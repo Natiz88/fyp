@@ -40,6 +40,14 @@ function Navbar() {
     });
   }, []);
 
+  const handleClickOutside = () => {
+    if (isSidebarOpen) {
+      dispatch(sidebarActions.closeSidebar());
+    }
+  };
+
+  const clickRef = useOutsideClick(handleClickOutside);
+
   const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
   const user = useSelector((state) => state.login.userDetails);
   const isSidebarOpen = useSelector((state) => state.sidebar.isSidebarOpen);
@@ -90,7 +98,10 @@ function Navbar() {
 
   return (
     <>
-      <div className="bg-primary fixed w-full z-10 h-[120px] lg:h-[80px] ">
+      <div
+        ref={clickRef}
+        className="bg-primary fixed w-full z-10 h-[120px] lg:h-[80px] "
+      >
         <div className="lg:w-full lg:h-full flex justify-between items-center">
           <div className="w-2/6 lg:w-1/4  ">
             <Link to="/">
@@ -155,12 +166,12 @@ function Navbar() {
             <div className="w-2/12 pl-4 lg:hidden">
               {isSidebarOpen ? (
                 <CloseIcon
-                  className="transition-all duration-600 ease-in"
+                  className="transition-all duration-600 ease-in cursor-pointer"
                   onClick={() => dispatch(sidebarActions.closeSidebar())}
                 />
               ) : (
                 <MenuIcon
-                  className="transition transform duration-1000 ease-in"
+                  className="transition transform duration-1000 ease-in cursor-pointer"
                   onClick={() => dispatch(sidebarActions.openSidebar())}
                 />
               )}
