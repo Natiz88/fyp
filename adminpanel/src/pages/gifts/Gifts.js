@@ -137,7 +137,7 @@ function Gifts() {
                       <div className="flex items-center text-sm">
                         <Avatar
                           className="hidden mr-3 md:block"
-                          src={`http://localhost:5000/static/users/${gift?.added_by.user_image}`}
+                          src={gift?.added_by.avatar}
                           alt="gift avatar"
                         />
                         <div>

@@ -98,6 +98,7 @@ function PendingVerifications() {
           authorization: `Bearer ${token}`,
         },
       };
+      console.log("bodyrej", reject);
       const response = await axios.put(
         `${url}/users/cancelVerification/${user?._id}`,
         body,
@@ -105,7 +106,7 @@ function PendingVerifications() {
       );
       getUsers();
       setModalText(`User verification was rejected`);
-      setTimeout(() => setInfoModal(false), 10000);
+      setTimeout(() => setInfoModal(false), 1000);
       setInfoModal(true);
     } catch (err) {
       console.log("uer", err);
@@ -131,31 +132,31 @@ function PendingVerifications() {
               users.length > 0 &&
               users.map((user, i) => (
                 <>
-                  <TableRow key={user._id}>
+                  <TableRow key={user?._id}>
                     <TableCell>
                       <div className="flex items-center text-sm">
                         <Avatar
                           className="hidden mr-3 md:block"
-                          src={`http://localhost:5000/static/users/${user.user_image}`}
+                          src={user?.avatar}
                           alt="User avatar"
                         />
                         <div>
                           <p className="font-semibold">{user.full_name}</p>
                           <p className="text-xs text-gray-600 dark:text-gray-400">
-                            {user.job}
+                            {user?.job}
                           </p>
                         </div>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">{user.user_role}</span>
+                      <span className="text-sm">{user?.user_role}</span>
                     </TableCell>
                     <TableCell>
-                      <Badge type={user.status}>{user.user_verified}</Badge>
+                      <Badge type={user?.status}>{user.user_verified}</Badge>
                     </TableCell>
                     <TableCell>
                       <span className="text-sm">
-                        {new Date(user.createdAt).toLocaleDateString()}
+                        {new Date(user?.createdAt).toLocaleDateString()}
                       </span>
                     </TableCell>
                     <TableCell>

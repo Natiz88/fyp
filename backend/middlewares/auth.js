@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 
 const auth = async (req, res, next) => {
   try {
-    console.log("upda");
     const authHeader = req.headers.authorization || req.headers.Authorization;
 
     if (!authHeader?.startsWith("Bearer"))
@@ -22,7 +21,6 @@ const auth = async (req, res, next) => {
     }
 
     const user = await User.findOne({ _id: decoded.id || decoded.user._id });
-    console.log("dec", user);
 
     req.user_id = user._id;
     req.user_role = user.user_role;

@@ -225,7 +225,6 @@ exports.downvoteAnswer = async (req, res) => {
 };
 
 exports.updateAnswer = async (req, res) => {
-  console.log("update answer", req.body);
   req.body.user_id = req.user_id;
   try {
     const answer = await Answers.findByIdAndUpdate(req.params.id, req.body, {

@@ -111,6 +111,7 @@ const PageDetails = () => {
         await socket.emit("changePostContent", question?._id);
         setComment("");
         toast("Comment posted successfully");
+        queryClient.invalidateQueries("question");
       },
       onError: () => {
         toast("An error occured");
@@ -126,6 +127,7 @@ const PageDetails = () => {
       onSuccess: async () => {
         await socket.emit("changePostContent", question?._id);
         toast("Comment deleted successfully");
+        queryClient.invalidateQueries("question");
       },
       onError: () => {
         toast("An error occured");
@@ -140,6 +142,7 @@ const PageDetails = () => {
       onSuccess: async () => {
         await socket.emit("changePostContent", question?._id);
         toast("Answer deleted successfully");
+        queryClient.invalidateQueries("question");
       },
       onError: () => {
         toast("An error occured");
@@ -157,6 +160,7 @@ const PageDetails = () => {
       onSuccess: async () => {
         await socket.emit("changePostContent", question?._id);
         toast("Answer posted successfully");
+        queryClient.invalidateQueries("question");
       },
       onError: () => {
         toast("An error occured");
@@ -177,6 +181,7 @@ const PageDetails = () => {
       onSuccess: async () => {
         await socket.emit("changePostContent", question?._id);
         toast("Answer edited successfully");
+        queryClient.invalidateQueries("question");
       },
       onError: () => {
         toast("An error occured");
@@ -192,6 +197,7 @@ const PageDetails = () => {
     {
       onSuccess: async () => {
         await socket.emit("changePostContent", question?._id);
+        queryClient.invalidateQueries("question");
       },
       onError: () => {
         toast("An error occured");
@@ -208,6 +214,7 @@ const PageDetails = () => {
       onSuccess: async () => {
         await socket.emit("changePostContent", question?._id);
         toast("The answer was accepted");
+        queryClient.invalidateQueries("question");
       },
       onError: () => {
         toast("An error occured");
@@ -223,6 +230,7 @@ const PageDetails = () => {
       onSuccess: async () => {
         await socket.emit("changePostContent", question?._id);
         toast("The answer was upvoted");
+        queryClient.invalidateQueries("question");
       },
       onError: () => {
         toast("An error occured");
@@ -238,6 +246,7 @@ const PageDetails = () => {
       onSuccess: async () => {
         await socket.emit("changePostContent", question?._id);
         toast("The answer was downvoted");
+        queryClient.invalidateQueries("question");
       },
       onError: () => {
         toast("An error occured");
@@ -253,6 +262,7 @@ const PageDetails = () => {
       onSuccess: async () => {
         await socket.emit("changePostContent", question?._id);
         toast("The reply was posted");
+        queryClient.invalidateQueries("question");
       },
       onError: () => {
         toast("An error occured");
@@ -330,6 +340,8 @@ const PageDetails = () => {
 
   const sortOrder = { positive: 0, true: 1, false: 2, pending: 2, negative: 2 };
 
+  console.log("questt", question);
+
   return (
     <div className="w-full md:w-11/12 m-auto flex justify-between">
       <LeftSidebar />
@@ -351,12 +363,13 @@ const PageDetails = () => {
                   >
                     <img
                       className="rounded-full w-[40px] h-[40px]"
-                      src={
-                        question?.user_id &&
-                        question?.user_id?.user_image.includes("https://")
-                          ? `${question?.user_id?.user_image}`
-                          : `${baseURL}/static/users/${question?.user_id?.user_image}`
-                      }
+                      src={question?.user_id?.avatar}
+                      // {
+                      //   question?.user_id &&
+                      //   question?.user_id?.user_image.includes("https://")
+                      //     ? `${question?.user_id?.user_image}`
+                      //     : `${baseURL}/static/users/${question?.user_id?.user_image}`
+                      // }
                       alt="img"
                     />
                     <div className="h-full ml-2">
@@ -456,8 +469,8 @@ const PageDetails = () => {
                       (a1, a2) =>
                         sortOrder[a1.answer_accepted] -
                           sortOrder[a2.answer_accepted] ||
-                        sortOrder[a1.user_id.user_verified] -
-                          sortOrder[a2.user_id.user_verified]
+                        sortOrder[a1.user_id?.user_verified] -
+                          sortOrder[a2.user_id?.user_verified]
                     )
                     .slice(0, answerPage)
 

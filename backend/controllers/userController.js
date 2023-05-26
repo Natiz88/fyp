@@ -268,7 +268,9 @@ exports.verifyTeacher = async (req, res) => {
 };
 
 exports.cancelVerification = async (req, res) => {
-  const { reason } = req.body.reject;
+  const { reject } = req.body;
+  console.log("ver cancl", reject);
+
   try {
     const user = await User.findByIdAndUpdate(req.params.id, {
       user_role: "student",
@@ -278,7 +280,7 @@ exports.cancelVerification = async (req, res) => {
     await sendEmail(
       "bistanatiz7@gmail.com",
       "User verification cancelled",
-      `Your account couldn't be verified because ${reason}`
+      `Your account couldn't be verified because ${reject}`
     );
     res.status(200).json({
       status: "success",

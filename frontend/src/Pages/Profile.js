@@ -46,7 +46,6 @@ const Profile = () => {
     }
     setLoading(false);
   };
-  console.log("contains", userProfile?.user_image.includes("https://"));
 
   return (
     <div className="w-full md:w-11/12 m-auto flex justify-between">
@@ -66,7 +65,7 @@ const Profile = () => {
               <EditIcon />
             </div>
           )}
-          {id === user?._id && user.user_verified === "negative" && (
+          {/* {id === user?._id && user.user_verified === "negative" && (
             <div
               title="verify kyc"
               onClick={() => dispatch(modalActions.openTeacherModal())}
@@ -82,17 +81,18 @@ const Profile = () => {
             >
               <HourglassBottomIcon />
             </div>
-          )}
+          )} */}
           <div className="m-4 bg-white rounded-lg">
             <div className="flex items-center justify-center py-4">
               <div className="rounded-full w-[120px] h-[120px] relative">
                 <img
-                  src={
-                    userProfile?.user_image &&
-                    userProfile?.user_image.includes("https://")
-                      ? `${userProfile?.user_image}`
-                      : `${baseURL}/static/users/${userProfile?.user_image}`
-                  }
+                  src={userProfile && userProfile?.avatar}
+                  // {
+                  //   userProfile?.user_image &&
+                  //   userProfile?.user_image.includes("https://")
+                  //     ? `${userProfile?.user_image}`
+                  //     : `${baseURL}/static/users/${userProfile?.user_image}`
+                  // }
                   alt="profile"
                   className="w-full h-full rounded-full"
                 />

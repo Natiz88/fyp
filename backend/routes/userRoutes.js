@@ -13,6 +13,9 @@ userRouter.route("/dashboard").get(userController.dashboardDetails);
 userRouter
   .route("/teacherSignup")
   .post(uploadUserPhoto, authController.teacherSignup);
+userRouter
+  .route("/teacherLoggedinSignup")
+  .post(uploadUserPhoto, authController.teacherLoggedinSignup);
 userRouter.route("/adminLogin").post(authController.adminLogin);
 userRouter.route("/login").post(authController.login);
 userRouter.route("/checkEmail/:email").get(userController.checkEmail);
@@ -33,7 +36,7 @@ userRouter.post("/sendLink", authController.sendLink);
 userRouter.post("/newpassword", authController.newPassword);
 userRouter
   .route("/cancelVerification/:id")
-  .put(adminAuth, userController.verifyTeacher);
+  .put(adminAuth, userController.cancelVerification);
 userRouter.route("/getCoins/:id").get(userController.getCoins);
 userRouter.route("/changePassword/:id").post(authController.changePassword);
 

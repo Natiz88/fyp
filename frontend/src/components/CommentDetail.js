@@ -77,12 +77,13 @@ const CommentDetail = ({ comment, user, deleteCommentSubmit }) => {
           >
             <img
               className="rounded-full w-[30px] h-[30px]"
-              src={
-                comment?.user_id &&
-                comment?.user_id?.user_image.includes("https://")
-                  ? `${comment?.user_id?.user_image}`
-                  : `${baseURL}/static/users/${comment?.user_id?.user_image}`
-              }
+              src={comment?.user_id?.avatar}
+              // {
+              //   comment?.user_id &&
+              //   comment?.user_id?.user_image.includes("https://")
+              //     ? `${comment?.user_id?.user_image}`
+              //     : `${baseURL}/static/users/${comment?.user_id?.user_image}`
+              // }
               alt="img"
             />
             <div className="h-full ml-2 flex justify-between items-center">

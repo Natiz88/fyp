@@ -76,7 +76,7 @@ const LeaderBoard = () => {
                     >
                       {" "}
                       <img
-                        src={`http://localhost:5000/static/users/${reward.user_image}`}
+                        src={reward.avatar}
                         alt="avatar"
                         className="rounded-full w-12"
                       />

@@ -138,12 +138,12 @@ function ReportedComments() {
                       <div className="flex items-center text-sm">
                         <Avatar
                           className="hidden mr-3 md:block"
-                          src={`http://localhost:5000/static/users/${report.user_id.user_image}`}
+                          src={report?.user_id?.avatar}
                           alt="report avatar"
                         />
                         <div>
                           <p className="font-semibold">
-                            {report.user_id.full_name}
+                            {report?.user_id?.full_name}
                           </p>
                           <p className="text-xs text-gray-600 dark:text-gray-400">
                             {report.job}

@@ -141,7 +141,7 @@ const AnswersDetail = ({
               //     ? `${answer?.user_id?.user_image}`
               //     : `${baseURL}/static/users/${answer?.user_id?.user_image}`
               // }
-              src={imagePreview}
+              src={answer?.user_id?.avatar}
               alt="img"
             />
             <div className="h-full ml-2 flex justify-between items-center">

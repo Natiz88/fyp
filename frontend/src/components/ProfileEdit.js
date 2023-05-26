@@ -21,13 +21,14 @@ function ProfileEdit({ userProfile, type, activeStep, changeStep, getUser }) {
 
   useEffect(() => {
     setImages(userProfile?.user_image);
-    if (userProfile && userProfile.user_image.includes("https://")) {
-      setImgPreviews(userProfile?.user_image || Avatar);
-    } else {
-      setImgPreviews(
-        `${baseURL}/static/users/${userProfile?.user_image}` || Avatar
-      );
-    }
+    // if (userProfile && userProfile.user_image.includes("https://")) {
+    //   setImgPreviews(userProfile?.user_image || Avatar);
+    // } else {
+    //   setImgPreviews(
+    //     `${baseURL}/static/users/${userProfile?.user_image}` || Avatar
+    //   );
+    // }
+    setImgPreviews(userProfile && userProfile?.avatar);
   }, []);
 
   const onImageChange = (e) => {
@@ -101,8 +102,8 @@ function ProfileEdit({ userProfile, type, activeStep, changeStep, getUser }) {
 
   const handleStep = (e) => {
     e.preventDefault();
-    let data = profileFormik.values;
-    data.user_image = images;
+    let data = { ...profileFormik.values, user_image: images };
+    console.log("data", data);
     dispatch(loginActions.updateTeacher(data));
     return changeStep(activeStep + 1);
   };

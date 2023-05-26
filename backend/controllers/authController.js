@@ -16,18 +16,25 @@ const signupToken = (id) => {
 };
 
 exports.signup = async (req, res) => {
+  console.log("signup", req.body.email);
   req.body.user_image = "avatar.png";
-  req.requestTime = new Date().toISOString();
+  // req.requestTime = new Date().toISOString();
   try {
     const reward = await Rewards.find({ type: "User Signup" });
     req.body.coins = reward[0].value;
-    const newUser = await User.create(req.body);
+    const newUser = await User.create({
+      email: req.body.email,
+      password: req.body.password,
+      full_name: req.body.full_name,
+      user_image: req.body.user_image,
+    });
     await RewardLog.create({
       value: reward[0].value,
       title: "",
       type: "signup",
       user_id: newUser._id,
     });
+    console.log("workd");
     res.status(201).json({
       status: "success",
       data: {
@@ -72,6 +79,7 @@ exports.changePassword = async (req, res) => {
 };
 
 exports.teacherSignup = async (req, res) => {
+  console.log("teac", req.body);
   if (req.files && req.files.length > 1) {
     req.body.user_image = req.files.user_image[0].filename;
     req.body.id_photo = req.files.id_photo[0].filename;
@@ -79,7 +87,7 @@ exports.teacherSignup = async (req, res) => {
   req.requestTime = new Date().toISOString();
   req.body.user_verified = "pending";
   try {
-    const reward = await Rewards.find({ type: "User Signup" });
+    const reward = await Rewards.find({ type: "Teacher Signup" });
     req.body.coins = reward[0].value;
 
     const newUser = await User.create(req.body);
@@ -97,6 +105,37 @@ exports.teacherSignup = async (req, res) => {
       token,
       data: {
         message: "user created successfully",
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "failed",
+      message: err.message,
+    });
+  }
+};
+
+exports.teacherLoggedinSignup = async (req, res) => {
+  console.log("teaclog", req.body);
+  if (req.files && req.files.length > 1) {
+    req.body.user_image = req.files.user_image[0].filename;
+    req.body.id_photo = req.files.id_photo[0].filename;
+  }
+  req.requestTime = new Date().toISOString();
+  req.body.user_verified = "pending";
+  try {
+    const newUser = await User.findOneAndUpdate(
+      { email: req.body.email },
+      req.body
+    );
+
+    const token = signupToken(newUser._id);
+
+    res.status(201).json({
+      status: "success",
+      token,
+      data: {
+        message: "user updated successfully",
       },
     });
   } catch (err) {

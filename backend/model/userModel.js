@@ -19,10 +19,7 @@ const userSchema = new mongoose.Schema(
     experience: { type: Number },
     email: {
       type: String,
-      required: [true, "email field is reqired"],
-      unique: true,
-      lowercase: true,
-      validator: [validator.isEmail, "invalid email"],
+      // required: [true, "email field is reqired"],
     },
     user_role: {
       type: String,
@@ -91,9 +88,18 @@ userSchema.methods.comparePassword = async function (passw) {
 // userSchema.virtual("fullName").get(function () {
 //   return `${this.first_name} ${this.last_name}`;
 // });
-// userSchema.virtual("avatar").get(function () {
-//   return `http://localhost:5000/static/users/${this.user_image}`;
-// });
+
+userSchema.virtual("avatar").get(function () {
+  console.log("im", this.user_image);
+  if (this.user_image) {
+    if (this.user_image.includes("https://")) {
+      return `${this.user_image}`;
+    } else {
+      return `http://localhost:5000/static/users/${this.user_image}`;
+    }
+  }
+  return "http://localhost:5000/static/users/avatar.png";
+});
 
 userSchema.virtual("questionsAsked", {
   ref: "questions",

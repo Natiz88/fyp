@@ -132,12 +132,13 @@ function Navbar() {
                               <div className="w-1/5">
                                 <img
                                   className="w-3/5"
-                                  alt="avatar"
-                                  src={
-                                    not?.sender?.user_image
-                                      ? `http://localhost:5000/static/users/${not?.sender?.user_image}`
-                                      : AvatarImage
-                                  }
+                                  alt="avatarss"
+                                  src={not?.sender?.avatar || AvatarImage}
+                                  // {
+                                  //   not?.sender?.user_image
+                                  //     ? `http://localhost:5000/static/users/${not?.sender?.avatar}`
+                                  //     : AvatarImage
+                                  // }
                                 />
                               </div>
                               <div className="w-4/5">

@@ -150,7 +150,7 @@ function Users() {
                       <div className="flex items-center text-sm">
                         <Avatar
                           className="hidden mr-3 md:block"
-                          src={`http://localhost:5000/static/users/${user.user_image}`}
+                          src={user?.avatar}
                           alt="User avatar"
                         />
                         <div>

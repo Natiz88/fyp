@@ -6,11 +6,7 @@ const UserDetails = ({ user }) => {
   return (
     <div className="flex flex-col items-center">
       <div className="w-[80px] bg-red-400 h-[80px] rounded-full">
-        <img
-          alt="avatar"
-          className="w-full h-full"
-          src={`http://localhost:5000/static/users/${user.user_image}`}
-        />
+        <img alt="avatar" className="w-full h-full" src={user?.avatar} />
       </div>
       <p className="flex py-1 items-center">
         <span className="font-semibold pr-2 text-lg">Name: </span>

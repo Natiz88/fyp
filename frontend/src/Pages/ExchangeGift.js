@@ -58,11 +58,9 @@ const ExchangeGift = () => {
     getGifts();
   }, [id]);
 
-  if (gifts && gifts.length === 0) {
-    return <div>No gifts</div>;
+  if (gifts && gifts.length < 1) {
+    return <div className="pt-20 min-h-[350px] text-center">No gifts</div>;
   }
-
-  console.log("gif", gifts);
 
   return (
     <div className="pt-[100px]">
@@ -80,7 +78,7 @@ const ExchangeGift = () => {
       <div className="flex flex-wrap w-full">
         {gifts &&
           gifts.map((gift) => (
-            <div className="w-[350px] text-center h-[400px] my-4 mx-8 items-center justify-center cursor-pointer border-gray-400 rounded-lg p-2">
+            <div className="w-[300px] text-center h-[400px] my-4 mx-8 items-center justify-center cursor-pointer border-gray-400 rounded-lg p-2">
               {/* <img
                 src={`http://localhost:5000/static/gifts/${gift.gift_image}`}
                 alt="gift"
@@ -135,10 +133,9 @@ const ExchangeGift = () => {
                       </Button>
                     </CardActions>
                   )}
-
-                  {id > 0 && (
-                    <Typography variant="p" color="text.secondary">
-                      Exchanged: {gift.createdAt}
+                  {id >= 0 && (
+                    <Typography variant="h7" color="text.secondary">
+                      Exchanged:{new Date(gift?.createdAt).toLocaleDateString()}
                     </Typography>
                   )}
                 </CardActionArea>

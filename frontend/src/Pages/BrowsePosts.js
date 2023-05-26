@@ -28,7 +28,7 @@ const BrowsePosts = () => {
 
   const handleChange = (event, value) => {
     setPage(value);
-    getQuestions();
+    // getQuestions();
     // queryClient.invalidateQueries({ queryKey: ["questions"] });
   };
 
